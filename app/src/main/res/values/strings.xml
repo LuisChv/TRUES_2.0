@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TRUES</string>
+    <string name="app_name">TRUES 2.0</string>
     <!-- Strings related to login -->
     <string name="prompt_username">Usuario</string>
     <string name="prompt_password">Contraseña</string>

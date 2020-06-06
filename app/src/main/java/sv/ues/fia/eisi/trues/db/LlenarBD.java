@@ -2393,10 +2393,10 @@ public class LlenarBD {
         UsuarioControl usuarioControl = new UsuarioControl(context);
 
         usuarioControl.crearUsuario(new Usuario("admin", "123456","LUCY SARAI","MONTOYA HERNANDEZ", true, 1));
-        usuarioControl.crearUsuario(new Usuario("alumno","123456","JAIRO ROBERTO","MURILLO DUCRET", false,2));
-        usuarioControl.crearUsuario(new Usuario("anuelaa","123456","EVERARDO","SEGOBIANO GONZALEZ", true,9));
-        usuarioControl.crearUsuario(new Usuario("cessar","123456","CESAR EDUARDO","REZA VELAZQUEZ", true,6));
-        usuarioControl.crearUsuario(new Usuario("cuarto","123456","JORGE","GONZALEZ NAVAS", false,2));
+        usuarioControl.crearUsuario(new Usuario("MH17015","123456","JAIRO ROBERTO","MURILLO DUCRET", false,2));
+        usuarioControl.crearUsuario(new Usuario("GC17026","123456","EVERARDO","SEGOBIANO GONZALEZ", true,9));
+        usuarioControl.crearUsuario(new Usuario("PM15020","123456","CESAR EDUARDO","REZA VELAZQUEZ", true,6));
+        usuarioControl.crearUsuario(new Usuario("VM17015","123456","JORGE","GONZALEZ NAVAS", false,2));
         usuarioControl.crearUsuario(new Usuario("decimo","123456","LIZBETH","LEMUS CARDOSO", false,5));
         usuarioControl.crearUsuario(new Usuario("invitado","123456","ADRIAN","NARANJO MARTINEZ", true,3));
         usuarioControl.crearUsuario(new Usuario("isaac","123456","ISACC MOISES","ROCHA AGUILAR", true,7));
@@ -2405,7 +2405,7 @@ public class LlenarBD {
         usuarioControl.crearUsuario(new Usuario("octavo","123456","MARTA GUADALUPE","VALLE CRUZ", false,4));
         usuarioControl.crearUsuario(new Usuario("primero","123456","FRANCISCO CESAR","BERNABE CASANOVA", true,1));
         usuarioControl.crearUsuario(new Usuario("quinto","123456","LUIS GUSTAVO","LÓPEZ RAMOS", false,3));
-        usuarioControl.crearUsuario(new Usuario("ronaldo","123456","CAROLINA","ORTEGA RODRIGUEZ", true,5));
+        usuarioControl.crearUsuario(new Usuario("CO17008","123456","CAROLINA","ORTEGA RODRIGUEZ", true,5));
         usuarioControl.crearUsuario(new Usuario("segundo","123456","MARIA BELEN","CAMPOS VIQUE", false,1));
         usuarioControl.crearUsuario(new Usuario("septimo","123456","ROMEL ANTONIO","CRUZ SERMEÑO", false,1));
         usuarioControl.crearUsuario(new Usuario("sexto","123456","DAVID ISMAEL","HERNÁNDEZ AYALA", false,3));

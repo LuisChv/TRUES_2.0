@@ -33,14 +33,12 @@ public class LoginViewModel extends ViewModel {
         Boolean exito = false;
 
         if (usuario != null){
-            mensaje = "Has iniciado sesión como: " + usuario.getUsuario();
             exito = true;
         }
         else {
             mensaje = "Usuario o contraseña incorrectos.";
+            Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
         }
-
-        Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
 
         return exito;
     }

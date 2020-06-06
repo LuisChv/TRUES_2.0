@@ -172,4 +172,23 @@ public class UsuarioControl {
         return usuarioList;
     }
 
+    public Usuario iniciarSesionBC(String usuarioId){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        Usuario usuario = null;
+        String args[] = {usuarioId};
+        String columnas[] = {"usuario","password", "nombre", "apellido", "tipo", "idFacultad"};
+        Cursor cursor = db.query("usuario", columnas, "usuario = ?", args, null, null, null);
+
+        if (cursor.moveToFirst()){
+            usuario = new Usuario();
+            usuario.setUsuario(cursor.getString(0));
+            usuario.setContraseña(cursor.getString(1));
+            usuario.setNombre(cursor.getString(2));
+            usuario.setApellido(cursor.getString(3));
+            usuario.setTipo(cursor.getInt(4) == 1);
+            usuario.setIdFacultad(cursor.getInt(5));
+        }
+
+        return usuario;
+    }
 }
