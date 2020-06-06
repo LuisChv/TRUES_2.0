@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_calendario">
+
+    <fragment
+        android:id="@+id/nav_calendario"
+        android:name="sv.ues.fia.eisi.trues.ui.global.calendario.lista.ActividadesFragment"
+        android:label="@string/title_calendario"
+        tools:layout="@layout/fragment_actividades_list" />
+    <fragment
+        android:id="@+id/nav_agregar_actividad"
+        android:name="sv.ues.fia.eisi.trues.ui.admin.calendario.agregar.AgregarActividadFragment"
+        android:label="@string/menu_agregar_actividad"
+        tools:layout="@layout/fragment_agregar_actividad" />
+    <fragment
+        android:id="@+id/nav_mis_tramites"
+        android:name="sv.ues.fia.eisi.trues.ui.alumno.mistramites.lista.MisTramitesFragment"
+        android:label="@string/title_mis_tramites"
+        tools:layout="@layout/fragment_mis_tramites_list" />
+    <fragment
+        android:id="@+id/nav_tramites"
+        android:name="sv.ues.fia.eisi.trues.ui.global.tramite.lista.TramitesFragment"
+        android:label="@string/title_tramites"
+        tools:layout="@layout/fragment_tramites_list" />
+    <fragment
+        android:id="@+id/nav_administracion"
+        android:name="sv.ues.fia.eisi.trues.ui.admin.AdministracionFragment"
+        android:label="@string/menu_administracion"
+        tools:layout="@layout/fragment_administracion" />
+    <fragment
+        android:id="@+id/nav_agregar_tramite"
+        android:name="sv.ues.fia.eisi.trues.ui.admin.tramite.agregar.AgregarTramiteFragment"
+        android:label="@string/menu_agregar_tramite"
+        tools:layout="@layout/fragment_agregar_tramite" />
+
+</navigation>

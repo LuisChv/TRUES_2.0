@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_calendario"
+            android:icon="@drawable/ic_calendar"
+            android:title="@string/title_calendario" />
+        <item
+            android:id="@+id/nav_agregar_actividad"
+            android:icon="@drawable/ic_agregar_actividad"
+            android:title="@string/menu_agregar_actividad"
+            android:visible="false"/>
+        <item
+            android:id="@+id/nav_tramites"
+            android:icon="@drawable/ic_tramite"
+            android:title="@string/title_tramites" />
+        <item
+            android:id="@+id/nav_agregar_tramite"
+            android:icon="@drawable/ic_agregar_tramite"
+            android:title="@string/menu_agregar_tramite"
+            android:visible="false"/>
+        <item
+            android:id="@+id/nav_mis_tramites"
+            android:icon="@drawable/ic_mis_tramites"
+            android:title="@string/title_mis_tramites"
+            android:visible="false"/>
+        <item
+            android:id="@+id/nav_administracion"
+            android:icon="@drawable/ic_agregar_personal"
+            android:title="@string/menu_administracion"
+            android:visible="false"/>
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/cerrar_sesion" />
+    </group>
+</menu>
