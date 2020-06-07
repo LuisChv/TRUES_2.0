@@ -1,5 +1,6 @@
 package  sv.ues.fia.eisi.trues.ui.login;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
@@ -17,6 +18,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,8 +29,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.net.Authenticator;
+import java.security.AuthProvider;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
@@ -36,9 +47,10 @@ import sv.ues.fia.eisi.trues.db.LlenarBD;
 import sv.ues.fia.eisi.trues.db.control.UsuarioControl;
 import sv.ues.fia.eisi.trues.db.entity.Usuario;
 import sv.ues.fia.eisi.trues.ui.global.MenuAdminActivity;
+import sv.ues.fia.eisi.trues.ui.login.invitado.FacultadGFragment;
 import sv.ues.fia.eisi.trues.ui.login.invitado.FacultadPreferidaFragment;
 
-public class LoginActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private LoginViewModel loginViewModel;
     private Context context;
@@ -47,6 +59,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
     private ImageView imageViewBarcode;
     private String barcode;
     private UsuarioControl control;
+    private ImageView imageViewFb, imageViewG;
+    private GoogleApiClient googleApiClient;
+    private UsuarioControl usuarioControl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +71,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
                 .get(LoginViewModel.class);
         context = this;
 
+        usuarioControl = new UsuarioControl(context);
+
         //VERIFICAR SI HAY SESIÓN ACTIVA
         SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         if (sharedPreferences.getString("usuario", null) != null){
@@ -64,12 +81,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             finish();
         }
 
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions)
+                .build();
+
+
         usernameEditText = findViewById(R.id.username);
         usernameEditText.setOnFocusChangeListener(this);
         passwordEditText = findViewById(R.id.password);
         passwordEditText.setOnFocusChangeListener(this);
         imageViewBarcode = findViewById(R.id.imageViewBarcode);
         imageViewBarcode.setOnClickListener(this);
+        imageViewG = findViewById(R.id.imageViewG);
+        imageViewG.setOnClickListener(this);
 
         final Button loginButton = findViewById(R.id.login);
         final Button invitadoButton = findViewById(R.id.buttonInvitado);
@@ -143,10 +173,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null){
+        if (requestCode == 777){
+
+            GoogleSignInResult resultG = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(resultG);
+
+        }
+        else if (result != null){
+
             if(result.getContents() != null){
                 barcode = result.getContents();
-                UsuarioControl usuarioControl = new UsuarioControl(context);
                 Usuario usuario = usuarioControl.iniciarSesionBC(barcode);
                 if(usuario != null){
                     iniciarSesion(usuario);
@@ -157,7 +193,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             } else {
                 Toast.makeText(this, "Error al escanear el código", Toast.LENGTH_SHORT).show();
             }
+
         }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("", "handleSignInResult:" + result.getStatus().toString());
+        if (result.isSuccess()){
+
+            GoogleSignInAccount account = result.getSignInAccount();
+            Usuario usuario = usuarioControl.iniciarSesionBC(account.getEmail());
+
+            if (usuario != null){
+                iniciarSesion(usuario);
+            } else {
+                registrarUsuarioG(account.getEmail(), account.getDisplayName(), account.getId());
+            }
+
+        } else {
+            Toast.makeText(this, "Ocurrió un error con la conexión.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void registrarUsuarioG(String email, String displayName, String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", email);
+        bundle.putString("contraseña", id);
+        bundle.putString("nombre", displayName);
+
+        FacultadGFragment fragment = new FacultadGFragment();
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        fragment.setArguments(bundle);
+        fragment.show(fragmentManager, "dialog");
     }
 
     @Override
@@ -180,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
-    private void iniciarSesion(Usuario usuario){
+    public void iniciarSesion(Usuario usuario){
         SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("usuario", usuario.getUsuario());
@@ -209,7 +276,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
                         passwordEditText.getText().toString(), context);
 
                 if (exito) {
-                    UsuarioControl usuarioControl = new UsuarioControl(context);
                     Usuario usuario = usuarioControl.iniciarSesion(
                             usernameEditText.getText().toString(),
                             passwordEditText.getText().toString());
@@ -219,6 +285,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             case R.id.buttonInvitado:
                 launchDialog();
                 break;
+            case R.id.imageViewG:
+                Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(intent, 777);
+                break;
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, "Ocurrió un error con la conexión.", Toast.LENGTH_SHORT).show();
     }
 }

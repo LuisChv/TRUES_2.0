@@ -117,7 +117,7 @@ public class UsuarioControl {
 
         db.close();
 
-        Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -190,5 +190,14 @@ public class UsuarioControl {
         }
 
         return usuario;
+    }
+
+    public void actualizarUsuario(String usuario, int i) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("idFacultad", i);
+        String[] args = {usuario};
+
+        db.update("usuario", values, "usuario = ?", args);
     }
 }

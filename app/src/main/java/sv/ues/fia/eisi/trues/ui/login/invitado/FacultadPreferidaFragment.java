@@ -20,6 +20,7 @@ import java.util.List;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.control.FacultadControl;
+import sv.ues.fia.eisi.trues.db.control.UsuarioControl;
 import sv.ues.fia.eisi.trues.db.entity.Facultad;
 import sv.ues.fia.eisi.trues.ui.global.MenuAdminActivity;
 

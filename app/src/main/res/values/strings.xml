@@ -101,5 +101,8 @@
     <string name="altitud">Altitud</string>
     <string name="descripcion">Descripción</string>
     <string name="quitar_ubicacion">Quitar ubicación</string>
+    <string name="usuario">"Usuario: "</string>
+    <string name="bienvenido">¡Ya casi está! solo necesitamos que ingreses unos datos.</string>
+    <string name="confirmar">Confirmar contraseña</string>
 
 </resources>
