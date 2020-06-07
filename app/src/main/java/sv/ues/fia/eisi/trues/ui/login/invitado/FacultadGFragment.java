@@ -106,7 +106,7 @@ public class FacultadGFragment extends DialogFragment {
 
                     Intent intent = new Intent(getActivity(), MenuAdminActivity.class);
 
-                    Toast.makeText(getActivity(), "Has iniciado sesión como: " + usuario.getUsuario(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "¡Bienvenido " + usuario.getNombre() + "!", Toast.LENGTH_LONG).show();
 
                     startActivity(intent);
                     getActivity().finish();

@@ -3,6 +3,7 @@ package  sv.ues.fia.eisi.trues.ui.login;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -39,6 +40,7 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.internal.CallbackManagerImpl;
+import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -84,7 +86,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
     private UsuarioControl usuarioControl;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
-    private String email = null;
     private ProfileTracker profileTracker;
 
     @Override
@@ -110,10 +111,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             finish();
         }
 
-        final Activity activity = this;
-
+        LoginManager.getInstance().logOut();
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email");
+        loginButton.setLoginBehavior(LoginBehavior.WEB_ONLY);
         LoginManager.getInstance().registerCallback(callbackManager,new FacebookCallback<LoginResult>(){
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -267,20 +267,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
 
     private void iniciarFB() {
         if (AccessToken.getCurrentAccessToken() != null) {
-            requestEmail(AccessToken.getCurrentAccessToken());
             Profile profile = Profile.getCurrentProfile();
             if (profile != null) {
-                if (email != null){
-                    Usuario usuario = usuarioControl.iniciarSesionBC(email);
-                    if (usuario != null){
-                        iniciarSesion(usuario);
-                    }
-                    else {
-                        registrarUsuarioG(email, profile.getName(), profile.getId());
-                    }
+                Usuario usuario = usuarioControl.iniciarSesionBC(profile.getFirstName()+profile.getLastName() + "@facebook.com");
+                if (usuario != null){
+                    iniciarSesion(usuario);
                 }
                 else {
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                    registrarUsuarioG(profile.getFirstName()+profile.getLastName() + "@facebook.com", profile.getName(), profile.getId());
                 }
 
             } else {
@@ -289,31 +283,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
         }
     }
 
-    private void requestEmail(AccessToken currentAccessToken) {
-        GraphRequest request = GraphRequest.newMeRequest(currentAccessToken, new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                if (response.getError() != null) {
-                    Toast.makeText(getApplicationContext(), response.getError().getErrorMessage(), Toast.LENGTH_LONG).show();
-                    return;
-                }
-                try {
-                    String email = object.getString("email");
-                    setEmail(email);
-                } catch (JSONException e) {
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id, first_name, last_name, email, gender, birthday, location");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    private void setEmail(String email) {
-        this.email = email;
-    }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
@@ -349,9 +318,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
         bundle.putString("nombre", displayName);
 
         FacultadGFragment fragment = new FacultadGFragment();
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragment.setArguments(bundle);
-        fragment.show(fragmentManager, "dialog");
+        try {
+            fragment.show(fragmentManager, "dialog");
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Revise su conexión a internet.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -386,7 +359,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
 
         Intent intent = new Intent(context, MenuAdminActivity.class);
 
-        Toast.makeText(this, "Has iniciado sesión como: " + usuario.getUsuario(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "¡Bienvenido " + usuario.getNombre() + "!", Toast.LENGTH_SHORT).show();
 
         startActivity(intent);
         finish();

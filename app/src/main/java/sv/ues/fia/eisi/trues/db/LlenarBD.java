@@ -2392,7 +2392,7 @@ public class LlenarBD {
 
         UsuarioControl usuarioControl = new UsuarioControl(context);
 
-        usuarioControl.crearUsuario(new Usuario("admin", "123456","LUCY SARAI","MONTOYA HERNANDEZ", true, 1));
+        usuarioControl.crearUsuario(new Usuario("admin", "123456","Administrador","", true, 1));
         usuarioControl.crearUsuario(new Usuario("MH17015","123456","JAIRO ROBERTO","MURILLO DUCRET", false,2));
         usuarioControl.crearUsuario(new Usuario("GC17026","123456","EVERARDO","SEGOBIANO GONZALEZ", true,9));
         usuarioControl.crearUsuario(new Usuario("PM15020","123456","CESAR EDUARDO","REZA VELAZQUEZ", true,6));
