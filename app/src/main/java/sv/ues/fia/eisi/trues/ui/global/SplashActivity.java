@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.LlenarBD;
 import sv.ues.fia.eisi.trues.ui.login.LoginActivity;
@@ -21,6 +24,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
         context = this;

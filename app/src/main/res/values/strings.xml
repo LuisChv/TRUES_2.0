@@ -105,4 +105,8 @@
     <string name="bienvenido">¡Ya casi está! solo necesitamos que ingreses unos datos.</string>
     <string name="confirmar">Confirmar contraseña</string>
 
+    <string name="facebook_app_id">257338822160284</string> <string name="fb_login_protocol_scheme">fb257338822160284</string>
+    <string name="iniciar_con">Iniciar con</string>
+
+
 </resources>

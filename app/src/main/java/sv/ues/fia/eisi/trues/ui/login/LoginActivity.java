@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,6 +30,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.internal.CallbackManagerImpl;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -40,6 +53,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.net.Authenticator;
 import java.security.AuthProvider;
+import java.util.ArrayList;
+import java.util.List;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
@@ -50,6 +65,12 @@ import sv.ues.fia.eisi.trues.ui.global.MenuAdminActivity;
 import sv.ues.fia.eisi.trues.ui.login.invitado.FacultadGFragment;
 import sv.ues.fia.eisi.trues.ui.login.invitado.FacultadPreferidaFragment;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private LoginViewModel loginViewModel;
@@ -58,14 +79,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
     private EditText passwordEditText;
     private ImageView imageViewBarcode;
     private String barcode;
-    private UsuarioControl control;
     private ImageView imageViewFb, imageViewG;
     private GoogleApiClient googleApiClient;
     private UsuarioControl usuarioControl;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+    private String email = null;
+    private ProfileTracker profileTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        callbackManager = CallbackManager.Factory.create();
+
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
@@ -81,6 +110,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             finish();
         }
 
+        final Activity activity = this;
+
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("email");
+        LoginManager.getInstance().registerCallback(callbackManager,new FacebookCallback<LoginResult>(){
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        iniciarFB();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                    }
+                });
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                iniciarFB();
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+            }
+        });
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                if (currentProfile != null) {
+                    iniciarFB();
+                }
+            }
+        };
+
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -90,6 +162,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions)
                 .build();
+
 
 
         usernameEditText = findViewById(R.id.username);
@@ -159,20 +232,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
 
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
-    }
-
-    private void launchDialog(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FacultadPreferidaFragment facultadPreferidaFragment = new FacultadPreferidaFragment();
-        facultadPreferidaFragment.show(fragmentManager, "Dialogo");
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 777){
 
             GoogleSignInResult resultG = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -195,10 +259,73 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             }
 
         }
+        else if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()){
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+
+    private void iniciarFB() {
+        if (AccessToken.getCurrentAccessToken() != null) {
+            requestEmail(AccessToken.getCurrentAccessToken());
+            Profile profile = Profile.getCurrentProfile();
+            if (profile != null) {
+                if (email != null){
+                    Usuario usuario = usuarioControl.iniciarSesionBC(email);
+                    if (usuario != null){
+                        iniciarSesion(usuario);
+                    }
+                    else {
+                        registrarUsuarioG(email, profile.getName(), profile.getId());
+                    }
+                }
+                else {
+                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                }
+
+            } else {
+                Profile.fetchProfileForCurrentAccessToken();
+            }
+        }
+    }
+
+    private void requestEmail(AccessToken currentAccessToken) {
+        GraphRequest request = GraphRequest.newMeRequest(currentAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                if (response.getError() != null) {
+                    Toast.makeText(getApplicationContext(), response.getError().getErrorMessage(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                try {
+                    String email = object.getString("email");
+                    setEmail(email);
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id, first_name, last_name, email, gender, birthday, location");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void setEmail(String email) {
+        this.email = email;
+    }
+
+    private void showLoginFailed(@StringRes Integer errorString) {
+        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    private void launchDialog(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FacultadPreferidaFragment facultadPreferidaFragment = new FacultadPreferidaFragment();
+        facultadPreferidaFragment.show(fragmentManager, "Dialogo");
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("", "handleSignInResult:" + result.getStatus().toString());
         if (result.isSuccess()){
 
             GoogleSignInAccount account = result.getSignInAccount();

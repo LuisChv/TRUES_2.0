@@ -4,6 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.MenuItem;
@@ -63,7 +70,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
         PasoFragment.OnListFragmentInteractionListener,
         RequisitosFragment.OnListFragmentInteractionListener,
         DocumentoFragment.OnListFragmentInteractionListener,
-        PasoEstadoFragment.OnListFragmentInteractionListener{
+        PasoEstadoFragment.OnListFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
@@ -71,6 +78,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
     private String usuario, nombreFacultad;
     private Integer facultad;
     private AccesoUsuarioControl accesoUsuarioControl;
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +115,15 @@ public class MenuAdminActivity extends AppCompatActivity implements
         TextView textViewHeaderFacultad = headerView.findViewById(R.id.textViewHeaderFacultad);
         textViewHeaderFacultad.setText("Facultad de " + nombreFacultad);
 
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions)
+                .build();
     }
 
     private void administrarOpciones() {
@@ -222,6 +238,15 @@ public class MenuAdminActivity extends AppCompatActivity implements
         editor.putBoolean("tipoUsuario", false);
         editor.commit();
 
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+
+            }
+        });
+
+        LoginManager.getInstance().logOut();
+
         Intent intentLogin = new Intent(this, LoginActivity.class);
         startActivity(intentLogin);
         finish();
@@ -270,6 +295,11 @@ public class MenuAdminActivity extends AppCompatActivity implements
 
     @Override
     public void onListFragmentInteraction(PasoEstado item) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 }
