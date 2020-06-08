@@ -1519,21 +1519,21 @@ public class LlenarBD {
         db.execSQL("INSERT INTO requisitoTramite(idRequisitoTramite,idTramite,idRequisito) VALUES (579,100,13);");
         db.execSQL("INSERT INTO requisitoTramite(idRequisitoTramite,idTramite,idRequisito) VALUES (580,100,17);");
 
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (1,'13,72','-89,2014',1,'Cubiculo 3');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (2,'13,72','-89,2014001',1,'Segunda puerta a la derecha');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (3,'13,72','-89,2014002',1,'Tercera puerta a la derecha');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (4,'13,72','-89,2014003',1,'Cubiculo del fondo');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (5,'13,72','-89,2014004',1,'Cubiculo 6');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (6,'13,72','-89,2014005',1,'Primera puerta a la izquierda');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (7,'13,72','-89,2014006',1,'Segundo Nivel');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (8,'13,72','-89,2014007',1,'Tercer Nivel');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (9,'13,72','-89,2014008',1,'Ultima puerta a la derecha');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (10,'13,72','-89,2014009',1,'Primera puerta');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (11,'13,72','-89,201401',1,'Ventanilla derecha');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (12,'13,72','-89,2014011',1,'Ventanilla izquierda');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (13,'13,72','-89,2014012',1,'Frente al edficio');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (14,'13,72','-89,2014013',1,'Plaza redonda');");
-        db.execSQL("INSERT INTO ubicacion(idUbicacion,longitud,latitud,altitud,componenteTematica) VALUES (15,'13,72','-89,2014014',1,'Edificio rojo');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (1,'13.721211','-89.200119',1,'Escuela de Ingeniería Industrial');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (2,'13.720518','-89.201455',1,'Administración Académica FIA');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (3,'13.719884','-89.201477',1,'Auditorio Miguél Marmol');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (4,'13.719300','-89.202557',1,'Unidad de Nuevo Ingreso');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (5,'13.720478','-89.202080',1,'Biblioteca de Ingeniería y Arquitectura');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (6,'13.720719','-89.200196',1,'Escuela de Ingeniería Eléctrica');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (7,'13.719801','-89.200766',1,'Unidad de Ciencias Básicas');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (8,'13.718089','-89.202465',1,'Oficinas Centrales');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (9,'13.718089','-89.202465',1,'Biblioteca Central');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (10,'13.720914','-89.201129',1,'Escuela de Ingeniería Civil');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (11,'13.717636','-89.200684',1,'Bienestar Universitario');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (12,'13.720503','-89.200270',1,'CIM - UES');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (13,'13.720865','-89.200372',1,'Salón F1312');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (14,'13.720255','-89.200895',1,'Edificio B');");
+        db.execSQL("INSERT INTO ubicacion(idUbicacion,latitud,longitud,altitud,componenteTematica) VALUES (15,'13.720620','-89.201413',1,'ASEIAS');");
 
         db.execSQL("INSERT INTO personal(idPersonal,nombrePersonal) VALUES (1,'LEMUS CARDOSO LIZBETH');");
         db.execSQL("INSERT INTO personal(idPersonal,nombrePersonal) VALUES (2,'MURILLO DUCRET JAIRO ROBERTO');");

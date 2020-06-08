@@ -1,25 +1,25 @@
-package sv.ues.fia.eisi.trues.ui.global.paso.detalle;
+package sv.ues.fia.eisi.trues.ui.global.ubicacion;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -29,72 +29,45 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.BuildConfig;
 import sv.ues.fia.eisi.trues.R;
-import sv.ues.fia.eisi.trues.db.control.PasoControl;
-import sv.ues.fia.eisi.trues.db.control.PersonalControl;
 import sv.ues.fia.eisi.trues.db.control.UbicacionControl;
-import sv.ues.fia.eisi.trues.db.entity.Paso;
-import sv.ues.fia.eisi.trues.db.entity.Personal;
 import sv.ues.fia.eisi.trues.db.entity.Ubicacion;
-import sv.ues.fia.eisi.trues.ui.global.personal.DetallePersonalFragment;
-import sv.ues.fia.eisi.trues.ui.global.ubicacion.UbicacionFragment;
 
-public class DetallePasoFragment extends DialogFragment implements View.OnClickListener {
-
-    private View view;
-    private TextView textViewDescripcion, textViewResponsable;
-    private Integer idPaso;
-    private Paso paso;
-    private Personal personal;
-    private CardView cardViewResponsable;
-    private CardView cardViewUbicacion;
+public class UbicacionFragment extends Fragment {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView mapView;
     private MapController mapController;
+    private View view;
     private Integer idPersonal;
     private Ubicacion ubicacion;
     private UbicacionControl control;
     private List<Ubicacion> ubicacionList;
 
-    public static DetallePasoFragment newInstance() {
-        return new DetallePasoFragment();
+    public static UbicacionFragment newInstance() {
+        return new UbicacionFragment();
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         Context context = getActivity().getApplicationContext();
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
 
-        idPaso = getArguments().getInt("idPaso", -1);
+        view = inflater.inflate(R.layout.fragment_ubicacion, container, false);
 
-        PasoControl pasoControl = new PasoControl(getActivity());
-        paso = pasoControl.obtenerPaso(idPaso);
-
-        PersonalControl personalControl = new PersonalControl(getActivity());
-        personal = personalControl.consultarPersonal(paso.getIdPersonal());
-
-        idPersonal = personal.getIdPersonal();
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        view = inflater.inflate(R.layout.fragment_detalle_paso, null);
-        textViewDescripcion = view.findViewById(R.id.textViewDescripcion);
-        textViewDescripcion.setText(paso.getDescripcion());
-        textViewResponsable = view.findViewById(R.id.textViewResponsable);
-        textViewResponsable.setText(personal.getNombrePersonal());
-        cardViewResponsable = view.findViewById(R.id.cardView3);
-        cardViewResponsable.setOnClickListener(this);
-        cardViewUbicacion = view.findViewById(R.id.cardView4);
-        //cardViewUbicacion.setOnClickListener(this);
-
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle(getText(R.string.ubicacion));
 
         control = new UbicacionControl(context);
+        idPersonal = getArguments().getInt("idPersonal", -1);
         ubicacionList = control.ObtenerUbicaciones(idPersonal);
 
         mapView = view.findViewById(R.id.map);
@@ -129,7 +102,7 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         ItemizedIconOverlay.OnItemGestureListener<OverlayItem> tap = new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
             @Override
             public boolean onItemLongPress(int arg0, OverlayItem arg1) {
-                return true;
+                return false;
             }
             @Override
             public boolean onItemSingleTapUp(int index, OverlayItem item) {
@@ -138,7 +111,7 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         };
 
         ItemizedOverlayWithFocus<OverlayItem> capa = new ItemizedOverlayWithFocus<OverlayItem>(getActivity(), puntos, tap);
-        capa.setFontSize(15);
+        capa.setFontSize(20);
         capa.setDescriptionBoxPadding(30);
         capa.setDescriptionBoxCornerWidth(20);
         capa.setDescriptionTitleExtraLineHeight(40);
@@ -146,39 +119,9 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         capa.setMarkerBackgroundColor(Color.WHITE);
         capa.setMarkerTitleForegroundColor(Color.rgb(127, 0, 0));
         capa.setFocusItemsOnTap(true);
-
         mapView.getOverlays().add(capa);
 
-
-        builder.setView(view);
-        return builder.create();
-    }
-
-    @Override
-    public void onClick(View v) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("idPersonal", personal.getIdPersonal());
-
-        switch (v.getId()){
-            case R.id.cardView3:
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                DetallePersonalFragment dialogFragment = new DetallePersonalFragment();
-                dialogFragment.setArguments(bundle);
-                dialogFragment.show(fragmentManager, "dialog");
-                break;
-            case R.id.cardView4:
-                UbicacionFragment fragment = new UbicacionFragment();
-                fragment.setArguments(bundle);
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .add(R.id.mainContainer, fragment)
-                        .addToBackStack(null).commit();
-                dismiss();
-                break;
-        }
-
-
+        return view;
     }
 
     private void requestPermissionsIfNecessary(String[] permissions) {
@@ -197,4 +140,10 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
 }
