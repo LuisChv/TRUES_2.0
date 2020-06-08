@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
     android:background="@color/ic_launcher_background"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.global.documento.DocumentoFragment"
+    tools:context=".ui.global.documento.lista.DocumentoFragment"
     tools:listitem="@layout/fragment_documento" />

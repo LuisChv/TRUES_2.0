@@ -49,14 +49,13 @@ import sv.ues.fia.eisi.trues.db.entity.UsuarioTramite;
 import sv.ues.fia.eisi.trues.ui.admin.AdministracionFragment;
 import sv.ues.fia.eisi.trues.ui.admin.calendario.agregar.AgregarActividadFragment;
 import sv.ues.fia.eisi.trues.ui.admin.permisos.PermisosFragment;
-import sv.ues.fia.eisi.trues.ui.admin.personal.lista.PersonalFragment;
 import sv.ues.fia.eisi.trues.ui.admin.tramite.agregar.AgregarTramiteFragment;
 import sv.ues.fia.eisi.trues.ui.alumno.mispaso.PasoEstadoFragment;
 import sv.ues.fia.eisi.trues.ui.global.calendario.lista.ActividadesFragment;
 
 import sv.ues.fia.eisi.trues.ui.alumno.mistramites.lista.MisTramitesFragment;
 
-import sv.ues.fia.eisi.trues.ui.global.documento.DocumentoFragment;
+import sv.ues.fia.eisi.trues.ui.global.documento.lista.DocumentoFragment;
 import sv.ues.fia.eisi.trues.ui.global.paso.lista.PasoFragment;
 import sv.ues.fia.eisi.trues.ui.global.requisito.RequisitosFragment;
 import sv.ues.fia.eisi.trues.ui.global.tramite.lista.TramitesFragment;

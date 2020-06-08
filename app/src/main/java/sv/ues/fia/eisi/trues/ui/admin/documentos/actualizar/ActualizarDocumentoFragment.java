@@ -18,7 +18,7 @@ import androidx.fragment.app.DialogFragment;
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.control.DocumentoControl;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
-import sv.ues.fia.eisi.trues.ui.global.documento.DocumentoFragment;
+import sv.ues.fia.eisi.trues.ui.global.documento.lista.DocumentoFragment;
 
 public class ActualizarDocumentoFragment extends DialogFragment implements View.OnClickListener {
     private View view;

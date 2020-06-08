@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.4" />
 
     <Button
         android:id="@+id/buttonInvitado"
@@ -124,5 +124,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.4" />
+
+    <ImageView
+        android:id="@+id/imageViewBarcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/buttonInvitado"
+        app:srcCompat="@drawable/ic_barcode" />
+
+    <ImageView
+        android:id="@+id/imageViewG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBarcode"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewBarcode"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBarcode"
+        app:srcCompat="@drawable/ic_google" />
+
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBarcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewBarcode"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBarcode"
+        style="@style/com_facebook_button"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

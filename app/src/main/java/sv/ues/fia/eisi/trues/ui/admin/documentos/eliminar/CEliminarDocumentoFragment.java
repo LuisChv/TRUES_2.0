@@ -12,11 +12,8 @@ import androidx.fragment.app.DialogFragment;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.control.DocumentoControl;
-import sv.ues.fia.eisi.trues.db.control.RequisitoControl;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
-import sv.ues.fia.eisi.trues.db.entity.Requisito;
-import sv.ues.fia.eisi.trues.ui.global.documento.DocumentoFragment;
-import sv.ues.fia.eisi.trues.ui.global.requisito.RequisitosFragment;
+import sv.ues.fia.eisi.trues.ui.global.documento.lista.DocumentoFragment;
 
 public class CEliminarDocumentoFragment extends DialogFragment {
 

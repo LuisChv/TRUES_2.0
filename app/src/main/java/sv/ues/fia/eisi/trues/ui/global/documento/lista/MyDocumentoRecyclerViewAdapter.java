@@ -1,20 +1,24 @@
-package sv.ues.fia.eisi.trues.ui.global.documento;
+package sv.ues.fia.eisi.trues.ui.global.documento.lista;
 
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
-import sv.ues.fia.eisi.trues.ui.global.documento.DocumentoFragment.OnListFragmentInteractionListener;
+import sv.ues.fia.eisi.trues.ui.global.documento.PdfFragment;
+import sv.ues.fia.eisi.trues.ui.global.documento.lista.DocumentoFragment.OnListFragmentInteractionListener;
 
 
 import java.util.List;
@@ -44,12 +48,27 @@ public class MyDocumentoRecyclerViewAdapter extends RecyclerView.Adapter<MyDocum
         holder.textViewId.setText(String.valueOf(position+1));
         holder.textViewUrl.setText(holder.mItem.getNombreDocumento());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.imageViewDescargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri uri = Uri.parse(holder.mItem.getUrl());
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 context.startActivity(intent);
+            }
+        });
+        holder.imageViewVer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PdfFragment pdfFragment = new PdfFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", holder.mItem.getUrl());
+                pdfFragment.setArguments(bundle);
+                ((AppCompatActivity)context)
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.mainContainer, pdfFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }
@@ -66,6 +85,8 @@ public class MyDocumentoRecyclerViewAdapter extends RecyclerView.Adapter<MyDocum
         public final RelativeLayout layoutABorrar;
         public final RelativeLayout layoutRojo;
         public final RelativeLayout layoutAzul;
+        public final ImageView imageViewVer;
+        public final ImageView imageViewDescargar;
         public Documento mItem;
 
         public ViewHolder(View view) {
@@ -76,6 +97,8 @@ public class MyDocumentoRecyclerViewAdapter extends RecyclerView.Adapter<MyDocum
             layoutABorrar = view.findViewById(R.id.layoutABorrar);
             layoutRojo = view.findViewById(R.id.layoutRojo);
             layoutAzul = view.findViewById(R.id.layoutAzul);
+            imageViewVer = view.findViewById(R.id.imageView6);
+            imageViewDescargar = view.findViewById(R.id.imageView4);
         }
 
         @Override

@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.trues.ui.global.documento;
+package sv.ues.fia.eisi.trues.ui.global.documento.lista;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +8,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,17 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.w3c.dom.Document;
-
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.control.AccesoUsuarioControl;
 import sv.ues.fia.eisi.trues.db.control.DocumentoControl;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
 import sv.ues.fia.eisi.trues.ui.admin.documentos.actualizar.ActualizarDocumentoFragment;
 import sv.ues.fia.eisi.trues.ui.admin.documentos.eliminar.CEliminarDocumentoFragment;
-import sv.ues.fia.eisi.trues.ui.admin.requisito.actualizar.ActualizarRequisitoFragment;
-import sv.ues.fia.eisi.trues.ui.admin.requisito.eliminar.CEliminarRequisitoFragment;
-import sv.ues.fia.eisi.trues.ui.global.requisito.rRecyclerItemTouchHelper;
 
 import java.util.ArrayList;
 import java.util.List;

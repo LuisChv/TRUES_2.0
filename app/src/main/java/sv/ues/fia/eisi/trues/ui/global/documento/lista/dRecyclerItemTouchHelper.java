@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.trues.ui.global.documento;
+package sv.ues.fia.eisi.trues.ui.global.documento.lista;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import sv.ues.fia.eisi.trues.ui.global.requisito.MyRequisitoRecyclerViewAdapter;
 
 public class dRecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 

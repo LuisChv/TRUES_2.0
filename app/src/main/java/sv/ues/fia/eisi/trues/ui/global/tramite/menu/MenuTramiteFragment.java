@@ -21,7 +21,7 @@ import sv.ues.fia.eisi.trues.db.control.AccesoUsuarioControl;
 import sv.ues.fia.eisi.trues.db.control.TramiteControl;
 import sv.ues.fia.eisi.trues.db.control.UsuarioTramiteControl;
 import sv.ues.fia.eisi.trues.db.entity.Tramite;
-import sv.ues.fia.eisi.trues.ui.global.documento.DocumentoFragment;
+import sv.ues.fia.eisi.trues.ui.global.documento.lista.DocumentoFragment;
 import sv.ues.fia.eisi.trues.ui.global.paso.lista.PasoFragment;
 import sv.ues.fia.eisi.trues.ui.global.requisito.RequisitosFragment;
 
