@@ -105,8 +105,24 @@
     <string name="bienvenido">¡Ya casi está! solo necesitamos que ingreses unos datos.</string>
     <string name="confirmar">Confirmar contraseña</string>
 
-    <string name="facebook_app_id">257338822160284</string> <string name="fb_login_protocol_scheme">fb257338822160284</string>
+    <string name="facebook_app_id">257338822160284</string>
+    <string name="fb_login_protocol_scheme">fb257338822160284</string>
     <string name="iniciar_con">Iniciar con</string>
+    <string name="title_activity_presentacion">PresentacionActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="bienvenido_a">Bienvenido a TRUES</string>
+    <string name="intro">Una aplicación que te ayudará a acceder a la información de los trámites que se realizan en la Universidad de El Salvador, con la cuál podrás obtener los datos necesarios sobre requisitos, pasos, documentos y ubicaciones. Todo ello con el fin de facilitar los procesos academicos.</string>
+    <string name="intro_login">Existen varias opciones para iniciar sesión. Si ya tienes un usuario, utiliza tus credenciales o escanea tu carnet, si no, puedes ingresar como invitado. Además, es posible registrarte usando tu cuenta de Google o Facebook.</string>
+    <string name="intro_calendario">En el calendario encontrarás todas las actividades programadas por tu facultad en el presente ciclo. Además, si accedes a una actividad, verás los trámites que puedes realizar durante ese periodo.</string>
+    <string name="intro_trámite">Podrás ver el listado de trámites disponibles en tu facultad y acceder a las opciones tocando uno de estos.</string>
+    <string name="intro_tramites">Desde esta pantalla accederás a las propiedades de cada trámite. Además, puedes iniciar un proceso si así lo deseas.</string>
+    <string name="intro_mis_tramites">Cuando inicias un proceso, podrás verlo en la pestaña \"Mis trámites\". En esta pantalla llevarás un control de todos los trámites que estas realizando actualmente y de su progreso.</string>
+    <string name="intro_mis_pasos">Si deslizas un paso hacia la izquierda, este quedará marcado como completado y se actualizará el progreso del respectivo trámite.</string>
+    <string name="intro_paso">Aquí se muestra la información relacionada a un paso. Para obtener detalles sobre el responsable, basta con tocar el recuadro. En la parte inferior, verás un mapa con la ubicación donde debes realizar el proceso.</string>
+    <string name="intro_documentos">¡Ya casi finalizamos! \nPor último, en esta sección podrás ver los documentos necesarios para un respectivo trámite, o si lo prefieres también lo puedes descargar.</string>
+    <string name="intro_fin">TRUES es un proyecto realizado por estudiantes de la Facultad de Ingeniería y Arquitectura en la Universidad de El Salvador. \n\n¡Esperamos que te sea útil!</string>
 
 
 </resources>
