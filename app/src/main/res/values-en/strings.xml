@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TRUES 2.0</string>
+    <!-- Strings related to login -->
+
+    <string name = "prompt_username"> User </string>
+    <string name = "prompt_password"> Password </string>
+    <string name = "action_sign_in"> Login </string>
+    <string name = "action_sign_in_short"> Enter </string>
+    <string name = "welcome"> Welcome </string>
+    <string name = "invalid_username"> Wrong user </string>
+    <string name = "invalid_password"> Wrong password </string>
+    <string name = "login_failed"> Login failed </string>
+    <string name = "ingresar_como_invitado"> Login as guest </string>
+    <string name = "sesion_iniciada"> You are logged in as: </string>
+    <string name = "llenar_bd"> Fill Database </string>
+    <string name = "title_activity_menu_invitado"> MenuInvitadoActivity </string>
+    <string name = "title_home"> Home </string>
+    <string name = "title_dashboard"> Dashboard </string>
+    <string name = "title_notifications"> Notifications </string>
+    <string name = "title_calendario"> Academic Calendar </string>
+    <string name = "title_tramites"> Procedures </string>
+    <string name = "title_activity_menu_alumno"> MenuAlumnoActivity </string>
+    <string name = "title_mis_tramites"> My procedures </string>
+    <string name = "cerrar_sesion"> Close session </string>
+    <string name = "title_activity_menu_admin"> MenuAdminActivity </string>
+    <string name = "navigation_drawer_open"> Open the navigation drawer </string>
+    <string name = "navigation_drawer_close"> Close the navigation drawer </string>
+    <string name = "nav_header_title"> Android Studio </string>
+    <string name = "nav_header_subtitle"> android.studio@android.com </string>
+    <string name = "nav_header_desc"> Navigation header </string>
+    <string name = "action_settings"> Configuration </string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="menu_agregar_tramite">Add procedure</string>
+    <string name="menu_administrar_tramites">Manage procedures</string>
+    <string name="menu_cambiar_calendario">Manage Calendar</string>
+    <string name="menu_agregar_actividad">Add activity</string>
+    <string name="menu_administrar_actividades">Manage activities</string>
+    <string name="title_usuario">User</string>
+    <string name="eliminar">Delete</string>
+    <string name="dialog_facultad_preferida">In which faculty are you interested?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="editar">Edit</string>
+    <string name="fecha_inicio">Start Date</string>
+    <string name="fecha_fin">End Date</string>
+    <string name="guardar_cambios">Save changes</string>
+    <string name="dialog_actualizar_actividad">Update activity</string>
+    <string name="guardar">Save</string>
+    <string name="cancelar">Cancel</string>
+    <string name="responsable">Responsible:</string>
+    <string name="ubicacion">Location</string>
+    <string name="cargos">Charges</string>
+    <string name="nombre">Name</string>
+    <string name="confirmar_eliminacion">Do you really want to delete this item?</string>
+    <string name="no_recuperable">Your progress will be deleted and you will not be able to recover it.</string>
+    <string name="quitar_tramite">Remove procedure</string>
+    <string name="actualizar_tramite">Update procedure</string>
+    <string name="paso">Step</string>
+    <string name="requisito">Requirement</string>
+    <string name="documento">Document</string>
+    <string name="tramite">Processing</string>
+    <string name="datos_incorrectos">Please enter the data correctly.</string>
+    <string name="agregar_pasos">Add Steps</string>
+    <string name="complejidad">Estimate complexity</string>
+    <string name="agregar_documento">Add document</string>
+    <string name="url">URL Link</string>
+    <string name="agregar_requisito">Add requirement</string>
+    <string name="advertencia">Also all its dependencies will be removed and you will not be able to recover them.</string>
+    <string name="actualizar_paso">Update step</string>
+    <string name="actualizar_requisito">Update requirement</string>
+    <string name="actualizar_documento">Update document</string>
+    <string name="permiso">Permission</string>
+    <string name="asignar_permisos">Assign permissions</string>
+    <string name="gestionar_permisos">Manage permissions</string>
+    <string name="quitar_permisos">Remove permissions</string>
+    <string name="pasos">Steps</string>
+    <string name="documentos">Documents</string>
+    <string name="requisitos">Requirements</string>
+    <string name="actualizar_personal">Update personal</string>
+    <string name="personal">Personal</string>
+    <string name="unidad_admin">Unity</string>
+    <string name="cargo">Position</string>
+    <string name="menu_agregar_personal">Add personal</string>
+    <string name="agregar_unidad">Add administrative unit</string>
+    <string name="menu_administracion">Administration</string>
+    <string name="menu_administrar_personal">Manage personal</string>
+    <string name="title_administracion">Administration</string>
+    <string name="title_personal">Administrative staff</string>
+    <string name="quitar_unidad">Remove unit</string>
+    <string name="agregar_cargo">Add charge</string>
+    <string name="quitar_cargo">Remove charge</string>
+    <string name="agregar_ubicacion">Add location</string>
+    <string name="longitud">Length</string>
+    <string name="latitud">Latitude</string>
+    <string name="altitud">Altitude</string>
+    <string name="descripcion">Description</string>
+    <string name="quitar_ubicacion">Remove location</string>
+    <string name="usuario">"User: "</string>
+    <string name="bienvenido">Almost done! we only need you to enter some data.</string>
+    <string name="confirmar">Confirm password</string>
+
+    <string name="facebook_app_id">257338822160284</string> <string name="fb_login_protocol_scheme">fb257338822160284</string>
+    <string name="iniciar_con">Iniciar con</string>
+
+</resources>

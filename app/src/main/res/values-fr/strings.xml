@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TRUES 2.0</string>
+    <!-- Strings related to login -->
+
+    <string name = "prompt_username"> Utilisateur </string>
+    <string name = "prompt_password"> Mot de passe </string>
+    <string name = "action_sign_in"> Connexion </string>
+    <string name = "action_sign_in_short"> Entrez </string>
+    <string name = "welcome"> Bienvenue </string>
+    <string name = "invalid_username"> Mauvais utilisateur </string>
+    <string name = "invalid_password"> Mot de passe incorrect </string>
+    <string name = "login_failed"> Échec de la connexion </string>
+    <string name = "ingresar_como_invitado"> Connectez-vous en tant quinvité </string>
+    <string name = "sesion_iniciada"> Vous êtes connecté en tant que: </string>
+    <string name = "llenar_bd"> Remplir la base de données </string>
+    <string name = "title_activity_menu_invitado"> MenuInvitadoActivity </string>
+    <string name = "title_home"> Home </string>
+    <string name = "title_dashboard"> Dashboard </string>
+    <string name = "title_notifications"> Notifications </string>
+    <string name = "title_calendario"> Calendrier académique </string>
+    <string name = "title_tramites">Procédures</string>
+    <string name = "title_activity_menu_alumno"> MenuAlumnoActivity </string>
+    <string name = "title_mis_tramites"> Mes procédures </string>
+    <string name = "cerrar_sesion"> Fermer la session </string>
+    <string name = "title_activity_menu_admin"> MenuAdminActivity </string>
+    <string name = "navigation_drawer_open">Ouvrez le tiroir de navigation </string>
+    <string name = "navigation_drawer_close"> Fermez le tiroir de navigation </string>
+    <string name = "nav_header_title"> Android Studio </string>
+    <string name = "nav_header_subtitle"> android.studio@android.com </string>
+    <string name = "nav_header_desc"> En-tête de navigation </string>
+    <string name = "action_settings"> Configuration </string>
+
+    <string name="menu_home">Accueil</string>
+    <string name="menu_gallery">Galerie</string>
+    <string name="menu_slideshow">Diaporama</string>
+    <string name="menu_tools">Outils</string>
+    <string name="menu_share">Partager</string>
+    <string name="menu_send">Envoyer</string>
+    <string name="menu_agregar_tramite">Ajouter une procédure</string>
+    <string name = "menu_administrar_tramites"> Gérer les procédures </string>
+    <string name = "menu_cambiar_calendario"> Gérer le calendrier </string>
+    <string name = "menu_agregar_actividad"> Ajouter une activité </string>
+    <string name = "menu_administrar_actividades"> Gérer les activités </string>
+    <string name = "title_usuario"> Utilisateur </string>
+    <string name = "eliminar"> Supprimer </string>
+    <string name = "dialog_facultad_preferida"> À quelle faculté êtes-vous intéressé? </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name = "editar"> Modifier </string>
+    <string name = "fecha_inicio"> Date de début </string>
+    <string name = "fecha_fin"> Date de fin </string>
+    <string name = "guardar_cambios"> Enregistrer les modifications </string>
+    <string name = "dialog_actualizar_actividad"> Mettre à jour lactivité </string>
+    <string name = "guardar"> Enregistrer </string>
+    <string name = "cancelar"> Annuler </string>
+    <string name = "responsable"> Responsable: </string>
+    <string name = "ubicacion"> Emplacement </string>
+    <string name = "cargos"> Frais </string>
+    <string name = "nombre"> Nom </string>
+    <string name = "confirmar_eliminacion"> Voulez-vous vraiment supprimer cet élément? </string>
+    <string name = "no_recuperable"> Votre progression sera supprimée et vous ne pourrez pas la récupérer. </string>
+    <string name = "quitar_tramite"> Procédure de suppression </string>
+    <string name = "actualizar_tramite"> Procédure de mise à jour </string>
+    <string name = "paso"> Étape </string>
+    <string name = "requisito"> Exigence </string>
+    <string name = "documento"> Document </string>
+    <string name = "tramite"> Traitement </string>
+    <string name = "datos_incorrectos"> Veuillez saisir les données correctement. </string>
+    <string name = "agregar_pasos"> Ajouter des étapes </string>
+    <string name = "complejidad"> Estimer la complexité </string>
+    <string name = "agregar_documento"> Ajouter un document </string>
+    <string name = "url"> Lien URL </string>
+    <string name = "agregar_requisito"> Ajouter une exigence </string>
+    <string name = "advertencia"> De plus, toutes ses dépendances seront supprimées et vous ne pourrez pas les récupérer. </string>
+    <string name = "actualizar_paso"> Étape de mise à jour </string>
+    <string name = "actualizar_requisito"> Exigence de mise à jour </string>
+    <string name = "actualizar_documento"> Mettre à jour le document </string>
+    <string name = "permiso"> Autorisation </string>
+    <string name = "asignar_permisos"> Attribuer des autorisations </string>
+    <string name = "gestionar_permisos"> Gérer les autorisations </string>
+    <string name = "quitar_permisos"> Supprimer les autorisations </string>
+    <string name = "pasos"> Étapes </string>
+    <string name = "documentos"> Documents </string>
+    <string name = "requisitos"> Exigences </string>
+    <string name = "actualizar_personal"> Mise à jour personnelle </string>
+    <string name = "personal"> Personnel </string>
+    <string name = "unidad_admin"> Unity </string>
+    <string name = "cargo"> Position </string>
+    <string name = "menu_agregar_personal"> Ajouter des informations personnelles </string>
+    <string name = "agregar_unidad"> Ajouter une unité administrative </string>
+    <string name = "menu_administracion"> Administration </string>
+    <string name = "menu_administrar_personal"> Gérer les informations personnelles </string>
+    <string name = "title_administracion"> Administration </string>
+    <string name = "title_personal"> Personnel administratif </string>
+    <string name = "quitar_unidad"> Supprimer lunité </string>
+    <string name = "agregar_cargo"> Ajouter des frais </string>
+    <string name = "quitar_cargo"> Supprimer les frais </string>
+    <string name = "agregar_ubicacion"> Ajouter un emplacement </string>
+    <string name = "longitud"> Longueur </string>
+    <string name = "latitud"> Latitude </string>
+    <string name = "altitud"> Altitude </string>
+    <string name = "descripcion"> Description </string>
+    <string name = "quitar_ubicacion"> Supprimer lemplacement </string>
+    <string name = "usuario"> "utilisateur:" </string>
+    <string name = "bienvenido"> Presque terminé! nous avons seulement besoin de vous pour saisir certaines données. </string>
+    <string name = "confirmar"> Confirmer le mot de passe </string>
+
+    <string name="facebook_app_id">257338822160284</string> <string name="fb_login_protocol_scheme">fb257338822160284</string>
+    <string name="iniciar_con">Iniciar con</string>
+</resources>
