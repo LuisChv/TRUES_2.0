@@ -22,7 +22,7 @@
     <string name = "title_tramites"> Procedures </string>
     <string name = "title_activity_menu_alumno"> MenuAlumnoActivity </string>
     <string name = "title_mis_tramites"> My procedures </string>
-    <string name = "cerrar_sesion"> Close session </string>
+    <string name = "cerrar_sesion"> Logout </string>
     <string name = "title_activity_menu_admin"> MenuAdminActivity </string>
     <string name = "navigation_drawer_open"> Open the navigation drawer </string>
     <string name = "navigation_drawer_close"> Close the navigation drawer </string>
@@ -108,6 +108,23 @@
     <string name="confirmar">Confirm password</string>
 
     <string name="facebook_app_id">257338822160284</string> <string name="fb_login_protocol_scheme">fb257338822160284</string>
-    <string name="iniciar_con">Iniciar con</string>
+    <string name="iniciar_con">Start with</string>
+    <string name="title_activity_presentacion">PresentacionActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="finalizar">Finalize</string>
+    <string name="bienvenido_a">Welcome to TRUES</string>
+    <string name="intro">An application that will help you to access to the information about formalities required at the University of El Salvador, so you could obtain all the essential datas concerning to requirements, steps, documents and location. All this in order to make easier the academic processes.</string>
+    <string name="intro_login">There are several options to login. If you already have a user, use your credentials or scan your card, if not, you can enter as a guest. In addition, it is possible to register using your Google or Facebook account.</string>
+    <string name="intro_calendario">In the calendar you will find all the activities programmed by your faculty in the current semester. In addition, if you access an activity, you will see the procedures you can carry out during that period.</string>
+    <string name="intro_trámite">You will be able to see the list of procedures available in your faculty and access the options by touching one of these.</string>
+    <string name="intro_tramites">From this screen you will access the properties of each procedure. Also, you can start a process if you want.</string>
+    <string name="intro_mis_tramites">When you start a process, you can see it in the \"My procedures\". On this screen you will keep track of all the procedures you are currently carrying out and their progress.</string>
+    <string name="intro_mis_pasos">If you slide a step to the left, it will be marked as completed and the progress of the respective procedure will be updated.</string>
+    <string name="intro_paso">Information related to a step is displayed here. To get details about the person in charge, just touch the box. At the bottom, you will see a map with the location where you must carry out the process.</string>
+    <string name="intro_documentos">We are almost done! \nFinally, in this section you will be able to see the necessary documents for a respective procedure, or if you prefer you can also download it.</string>
+    <string name="intro_fin">TRUES It is a project carried out by students of the Faculty of Engineering and Architecture at the University of El Salvador. \n\nWe hope you find it useful!</string>
+
+
 
 </resources>

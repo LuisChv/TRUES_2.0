@@ -108,5 +108,22 @@
     <string name = "confirmar"> Confirmer le mot de passe </string>
 
     <string name="facebook_app_id">257338822160284</string> <string name="fb_login_protocol_scheme">fb257338822160284</string>
-    <string name="iniciar_con">Iniciar con</string>
+    <string name="iniciar_con">Commencer avec</string>
+    <string name="title_activity_presentacion">PresentacionActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="finalizar">Finaliser</string>
+    <string name="bienvenido_a">Bienvenue chez TRUES</string>
+    <string name="intro">Une application qui vous aidera à accéder aux informations sur les procédures qui sont effectuées àl Université El Salvador, avec lesquelles vous pouvez obtenir les données nécessaires sur les exigences, les étapes, les documents et les lieux. Tout cela afin de faciliter les processus académiques.</string>
+    <string name="intro_login">Il existe plusieurs options pour se connecter. Si vous avez déjà un utilisateur, utilisez vos informations didentification ou scannez votre carte, sinon, vous pouvez entrer en tant quinvité. De plus, il est possible de sinscrire en utilisant votre compte Google ou Facebook.</string>
+    <string name="intro_calendario">Dans le calendrier, vous trouverez toutes les activités programmées par votre faculté dans ce cycle. De plus, si vous accédez à une activité, vous verrez les procédures que vous pouvez effectuer pendant cette période.</string>
+    <string name="intro_trámite">Vous pourrez voir la liste des procédures disponibles dans votre faculté et accéder aux options en touchant lune dentre elles.</string>
+    <string name="intro_tramites">Depuis cet écran, vous accéderez aux propriétés de chaque procédure. Vous pouvez également démarrer un processus si vous le souhaitez.</string>
+    <string name="intro_mis_tramites">Lorsque vous démarrez un processus, vous pouvez le voir dans longlet \"Mes procédures\". Sur cet écran, vous garderez une trace de toutes les procédures que vous effectuez actuellement et de leur progression.</string>
+    <string name="intro_mis_pasos">Si vous faites glisser une étape vers la gauche, elle sera marquée comme terminée et lavancement de la procédure respective sera mis à jour.</string>
+    <string name="intro_paso">Les informations relatives à une étape sont affichées ici. Pour obtenir des détails sur la personne en charge, appuyez simplement sur la case. En bas, vous verrez une carte avec lemplacement où vous devez effectuer le processus.</string>
+    <string name="intro_documentos">Nous avons presque fini! \nEnfin, dans cette section, vous pourrez voir les documents nécessaires pour une procédure respective, ou si vous préférez, vous pouvez également le télécharger.</string>
+    <string name="intro_fin">TRUES Il sagit dun projet réalisé par des étudiants de la Faculté de génie et darchitecture del Université El Salvador. \n\nNous espérons que cela vous sera utile!</string>
+
+
 </resources>
