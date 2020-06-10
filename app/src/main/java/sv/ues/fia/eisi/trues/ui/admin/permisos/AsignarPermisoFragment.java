@@ -64,7 +64,7 @@ public class AsignarPermisoFragment extends DialogFragment {
         usuarioList = usuarioControl.obtenerUsuarios(idFacultad);
 
         usuarios = new ArrayList<>();
-        usuarios.add("Seleccione un usuario...");
+        usuarios.add(getText(R.string.seleccionar_usuario).toString());
         for (int i = 0; i<usuarioList.size(); i++){
             usuarios.add(usuarioList.get(i).getUsuario());
         }

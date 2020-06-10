@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Actividad;
 
@@ -38,7 +39,7 @@ public class ActividadControl {
         values.put("final", fechaFinal);
 
         if (cursor.moveToFirst()){
-            Toast.makeText(context.getApplicationContext(), "Error, esta actividad ya existe.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context.getApplicationContext(), context.getText(R.string.error_actividad).toString(), Toast.LENGTH_SHORT).show();
         }
         else {
             db.insert("actividad", null, values);
@@ -70,7 +71,7 @@ public class ActividadControl {
         db.insert("actividad", null, values);
         db.close();
 
-        Toast.makeText(context.getApplicationContext(), "Se ha creado la actividad " + idActividad + " con éxito.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.actividad_creada).toString(), Toast.LENGTH_SHORT).show();
     }
 
     public void EliminarActividad(int idActividad){
@@ -151,9 +152,9 @@ public class ActividadControl {
 
         if (cursor.moveToFirst()){
             db.update("actividad", values,"idActividad = ?", args);
-            mensaje = "Se ha actualizado la Actividad "+idActividad+" con exito";
+            mensaje = context.getText(R.string.actividad_actualizada).toString();
         }else {
-            mensaje = "Error al actualizar";
+            mensaje = context.getText(R.string.error_actualizar).toString();
         }
         db.close();
         cursor.close();

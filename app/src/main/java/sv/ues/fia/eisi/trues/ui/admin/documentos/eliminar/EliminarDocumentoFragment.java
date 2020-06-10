@@ -46,7 +46,7 @@ public class EliminarDocumentoFragment extends DialogFragment {
         documentoList = documentoControl.consultarDocumentos(idTramite);
 
         documentos = new ArrayList<>();
-        documentos.add("Seleccione un documento...");
+        documentos.add(getText(R.string.seleccionar_documento).toString());
         for (int i = 0; i<documentoList.size(); i++){
             documentos.add(documentoList.get(i).getNombreDocumento());
         }

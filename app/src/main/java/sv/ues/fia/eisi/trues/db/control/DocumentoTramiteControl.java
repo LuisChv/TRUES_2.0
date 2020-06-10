@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
 import sv.ues.fia.eisi.trues.db.entity.DocumentoTramite;
@@ -33,12 +34,12 @@ public class DocumentoTramiteControl {
         Cursor cursor = db.query("documentoTramite",columns,"idDocumento = ? AND idTramite = ?",args,null,null,null);
         ContentValues values = new ContentValues();
         if(cursor.moveToFirst()){
-            mensaje = "Ya existe este registro";
+            mensaje = context.getText(R.string.error_documento).toString();
         } else {
             values.put("idDocumento",idDocumento);
             values.put("idTramite",idTramite);
             db.insert("documentoTramite",null,values);
-            mensaje = "Se ha registrado un nuevo Documento al tramite";
+            mensaje = context.getText(R.string.documento_creado).toString();
         }
         db.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
@@ -126,6 +127,6 @@ public class DocumentoTramiteControl {
         String args[] = {String.valueOf(idDocumento), String.valueOf(idTramite)};
         db.delete("documentoTramite","idDocumento = ? AND idTramite = ?",args);
         db.close();
-        Toast.makeText(context.getApplicationContext(), "Se ha quitado el documento de este trámite", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.documento_eliminado).toString(), Toast.LENGTH_SHORT).show();
     }
 }

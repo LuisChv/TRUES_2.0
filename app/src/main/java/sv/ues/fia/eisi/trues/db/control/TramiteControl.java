@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.ActividadTramite;
 import sv.ues.fia.eisi.trues.db.entity.Tramite;
@@ -40,12 +41,12 @@ public class TramiteControl {
 
         if(cursor.moveToFirst())
         {
-            mensaje = "Error: el tramite ya existe";
+            mensaje = context.getText(R.string.tramite_error).toString();
         }
         else
         {
             db.insert("tramite", null, values);
-            mensaje="Nuevo tramite guardado correctamente";
+            mensaje=context.getText(R.string.tramite_agregado).toString();
 
             Cursor cursor2 = db.rawQuery("SELECT MAX(idTramite) FROM tramite ",null);
 
@@ -137,9 +138,9 @@ public class TramiteControl {
                 cursorUsuarioPaso.close();
             }
             db.delete("tramite","idTramite = ?", args);
-            mensaje = "Se elimino el tramite correctamente";
+            mensaje = context.getText(R.string.elimindo).toString();
         } else {
-            mensaje = "Error al eliminar tramite";
+            mensaje = context.getText(R.string.no_existe).toString();
         }
         cursorActividadTramite.close();
         cursorDocumentoTramite.close();

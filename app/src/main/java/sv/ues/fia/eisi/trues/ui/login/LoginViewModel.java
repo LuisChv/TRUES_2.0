@@ -36,7 +36,7 @@ public class LoginViewModel extends ViewModel {
             exito = true;
         }
         else {
-            mensaje = "Usuario o contraseña incorrectos.";
+            mensaje = context.getText(R.string.usuario_incorrecto).toString();
             Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
         }
 

@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -251,11 +252,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
                 if(usuario != null){
                     iniciarSesion(usuario);
                 } else {
-                    Toast.makeText(this, "Este usuario no existe en la base de datos.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getText(R.string.error_usuario), Toast.LENGTH_SHORT).show();
                 }
 
             } else {
-                Toast.makeText(this, "Error al escanear el código", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getText(R.string.error_barra), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -274,7 +275,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
                     iniciarSesion(usuario);
                 }
                 else {
-                    registrarUsuarioG(profile.getFirstName()+profile.getLastName() + "@facebook.com", profile.getName(), profile.getId());
+                    String foto = null;
+                    if (profile.getProfilePictureUri(150, 150) != null){
+                        foto = profile.getProfilePictureUri(150, 150).toString();
+                    }
+                    registrarUsuarioG(
+                            profile.getFirstName()+profile.getLastName() + "@facebook.com",
+                            profile.getName(), profile.getId(),
+                            foto);
                 }
 
             } else {
@@ -303,19 +311,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
             if (usuario != null){
                 iniciarSesion(usuario);
             } else {
-                registrarUsuarioG(account.getEmail(), account.getDisplayName(), account.getId());
+                String foto = null;
+                if (account.getPhotoUrl() != null){
+                    foto = account.getPhotoUrl().toString();
+                }
+                registrarUsuarioG(account.getEmail(), account.getDisplayName(), account.getId(), foto);
             }
 
         } else {
-            Toast.makeText(this, "Ocurrió un error con la conexión.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getText(R.string.error_conexion), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void registrarUsuarioG(String email, String displayName, String id) {
+    private void registrarUsuarioG(String email, String displayName, String id, String  foto) {
         Bundle bundle = new Bundle();
         bundle.putString("username", email);
         bundle.putString("contraseña", id);
         bundle.putString("nombre", displayName);
+        bundle.putString("foto", foto);
 
         FacultadGFragment fragment = new FacultadGFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -323,7 +336,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
         try {
             fragment.show(fragmentManager, "dialog");
         } catch (Exception e){
-            Toast.makeText(getApplicationContext(), "Revise su conexión a internet.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getText(R.string.revisar_conexion), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -359,7 +372,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
 
         Intent intent = new Intent(context, MenuAdminActivity.class);
 
-        Toast.makeText(this, "¡Bienvenido " + usuario.getNombre() + "!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getText(R.string.bienvenido2) + usuario.getNombre() + "!", Toast.LENGTH_SHORT).show();
 
         startActivity(intent);
         finish();
@@ -394,6 +407,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Ocurrió un error con la conexión.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getText(R.string.error_conexion), Toast.LENGTH_SHORT).show();
     }
 }

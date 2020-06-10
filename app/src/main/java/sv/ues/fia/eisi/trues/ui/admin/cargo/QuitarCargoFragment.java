@@ -57,7 +57,7 @@ public class QuitarCargoFragment extends DialogFragment implements AdapterView.O
         cargoList = cargoControl.ObtenerCargos(idPersonal);
 
         cargos = new ArrayList<>();
-        cargos.add("Seleccione un cargo...");
+        cargos.add(getText(R.string.seleccionar_cargo).toString());
         for (int i = 0; i<cargoList.size(); i++){
             cargos.add(cargoList.get(i).getNombreCargo());
         }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.ActividadTramite;
 
@@ -34,9 +35,9 @@ public class ActividadTramiteControl {
             values.put("idActividad",idActividad);
 
             db.insert("actividadTramite",null,values);
-            mensaje = "Se ha agregado el tramite " + idTramite + " a la actividad " + idActividad;
+            mensaje = context.getText(R.string.tramite_agregado).toString();
         }else {
-            mensaje = "Este trámite ya fue agregado.";
+            mensaje = context.getText(R.string.tramite_error).toString();
         }
         cursor.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
@@ -51,7 +52,7 @@ public class ActividadTramiteControl {
         db.close();
 
         Toast.makeText(context.getApplicationContext(),
-                "Se ha quitado el tramite " + idTramite + " de la actividad "+ idActividad,
+                context.getText(R.string.tramite_suprimido).toString(),
                 Toast.LENGTH_SHORT).show();
     }
 

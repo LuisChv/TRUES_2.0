@@ -66,7 +66,7 @@ public class ActualizarPasoFragment extends DialogFragment implements View.OnCli
         paso = pasoControl.obtenerPaso(idPaso);
 
         nombrePersonal = new ArrayList<>();
-        nombrePersonal.add("Seleccione a alguien del personal...");
+        nombrePersonal.add(getText(R.string.seleccionar_personal).toString());
 
         for (int i = 0; i<personalList.size(); i++){
             nombrePersonal.add(personalList.get(i).getNombrePersonal());

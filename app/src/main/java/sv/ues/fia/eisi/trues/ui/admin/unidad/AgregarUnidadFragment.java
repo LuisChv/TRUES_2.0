@@ -69,7 +69,7 @@ public class AgregarUnidadFragment extends DialogFragment implements AdapterView
         unidadList = unidadControl.obtenerUAdmin(idFacultad);
 
         unidades = new ArrayList<>();
-        unidades.add("Seleccione una unidad...");
+        unidades.add(getText(R.string.seleccionar_unidad).toString());
         for (int i = 0; i<unidadList.size(); i++){
             unidades.add(unidadList.get(i).getNombreUAdmin());
         }

@@ -63,7 +63,7 @@ public class SeleccionarTramitesFragment extends DialogFragment implements Adapt
         }
 
         tramites = new ArrayList<>();
-        tramites.add("Seleccione un trámite...");
+        tramites.add(getText(R.string.seleccionar_tramite).toString());
         for (int i = 0; i<tramiteList.size(); i++){
             tramites.add(tramiteList.get(i).getNombreTramite());
         }

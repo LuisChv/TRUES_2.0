@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Personal;
 
@@ -32,7 +33,7 @@ public class PersonalControl {
         ContentValues values = new ContentValues();
 
         if (cursor.moveToFirst()){
-            mensaje = "La persona ya existe en la base de datos";
+            mensaje = context.getText(R.string.personal_error).toString();
         } else {
             values.put("nombrePersonal",nombrePersonal);
 
@@ -44,7 +45,7 @@ public class PersonalControl {
             ultimoId = cursor2.getInt(0);
             cursor2.close();
 
-            mensaje = "Se ha registrado un nuevo personal";
+            mensaje = context.getText(R.string.personal_creado).toString();;
         }
 
         db.close();
@@ -99,9 +100,9 @@ public class PersonalControl {
         values.put("nombrePersonal",nombrePersonal);
         if(cursor.moveToFirst()){
             db.update("personal",values,"idPersonal = ?", args);
-            mensaje = "Se han actualizado los datos del personal";
+            mensaje = context.getText(R.string.cambios_guardados).toString();
         } else {
-            mensaje = "No se ha encontrado el registro";
+            mensaje = context.getText(R.string.error).toString();
         }
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
@@ -115,7 +116,7 @@ public class PersonalControl {
         if (cursor.moveToFirst()){
             Toast.makeText(
                     context.getApplicationContext(),
-                    "No puedes eliminar este elemento ya que existen muchos objetos relacionados a él",
+                    context.getText(R.string.error_eliminar).toString(),
                     Toast.LENGTH_SHORT).show();
         } else {
             db.delete("personal", "idPersonal = ?", args);
@@ -125,7 +126,7 @@ public class PersonalControl {
 
             Toast.makeText(
                     context.getApplicationContext(),
-                    "Personal eliminado",
+                    context.getText(R.string.personal_eliminado).toString(),
                     Toast.LENGTH_SHORT).show();
         }
     }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Cargo;
 
@@ -30,14 +31,14 @@ public class CargoControl {
         ContentValues values =  new ContentValues();
         values.put("nombreCargo", nombreCargo);
         if (cursor.moveToFirst()){
-            mensaje = "Error al crear el Cargo";
+            mensaje = context.getText(R.string.error_cargo).toString();
         }else {
             db.insert("cargo", null, values);
             Cursor cursor2 = db.rawQuery("SELECT MAX(idCargo) FROM cargo ",null);
             cursor2.moveToFirst();
             ultimoId = cursor2.getInt(0);
             cursor2.close();
-            mensaje = "Se a creado el cargo "+ultimoId+" con éxito.";
+            mensaje = context.getText(R.string.cargo_creado).toString();
         }
         cursor.close();
         db.close();

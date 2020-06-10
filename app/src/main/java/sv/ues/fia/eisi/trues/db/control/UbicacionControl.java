@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Ubicacion;
 
@@ -35,10 +36,10 @@ public class UbicacionControl {
         values.put("altitud", altitud);
         values.put("componenteTematica", componenteTamatica);
         if (cursor.moveToFirst()){
-            mensaje = "Error: la ubicacion ya existe";
+            mensaje = context.getText(R.string.error_duplicado).toString();
         }else {
             db.insert("ubicacion", null, values);
-            mensaje = "Ubicacion guardada con exito";
+            mensaje = context.getText(R.string.ubicacion_creada).toString();
 
             Cursor cursor2 = db.rawQuery("SELECT MAX(idUbicacion) FROM ubicacion ",null);
 

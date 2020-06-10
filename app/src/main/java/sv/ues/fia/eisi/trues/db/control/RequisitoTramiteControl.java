@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Requisito;
 import sv.ues.fia.eisi.trues.db.entity.RequisitoTramite;
@@ -35,12 +36,12 @@ public class RequisitoTramiteControl {
 
         if(cursor.moveToFirst())
         {
-            mensaje = "Error: el registro ya existe";
+            mensaje = context.getText(R.string.error_duplicado).toString();
         }
         else
         {
             db.insert("requisitoTramite", null, values);
-            mensaje="Registro guardado";
+            mensaje=context.getText(R.string.cambios_guardados).toString();
         }
 
         db.close();
@@ -79,7 +80,7 @@ public class RequisitoTramiteControl {
         String args[] = {String.valueOf(idRequisito), String.valueOf(idTramite)};
         db.delete("requisitoTramite","idRequisito = ? AND idTramite = ?", args);
         db.close();
-        Toast.makeText(context.getApplicationContext(), "Se ha quitado el requisito de este trámite", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.cambios_guardados).toString(), Toast.LENGTH_SHORT).show();
     }
 
     //CONSULTAR (todos los requisitos de un tramite)

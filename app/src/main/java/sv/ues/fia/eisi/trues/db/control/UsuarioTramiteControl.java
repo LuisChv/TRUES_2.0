@@ -128,7 +128,7 @@ public class UsuarioTramiteControl {
         }
 
         cursor.close();
-        Toast.makeText(context.getApplicationContext(), "Se ha eliminado su progreso.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.progreso_eliminado).toString(), Toast.LENGTH_SHORT).show();
         db.close();
     }
 }

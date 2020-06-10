@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Requisito;
 
@@ -34,10 +35,10 @@ public class RequisitoControl {
         ContentValues values =  new ContentValues();
         values.put("descripcion", descripcion);
         if (cursor.moveToFirst()){
-            mensaje = "Error: el requisito ya existe";
+            mensaje = context.getText(R.string.error_requisito).toString();
         }else {
             db.insert("requisito", null, values);
-            mensaje = "Requisito guardado con exito";
+            mensaje = context.getText(R.string.requisito_creado).toString();
 
             Cursor cursor2 = db.rawQuery("SELECT MAX(idRequisito) FROM requisito ",null);
 

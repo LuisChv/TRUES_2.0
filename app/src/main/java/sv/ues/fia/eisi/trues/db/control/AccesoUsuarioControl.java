@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.AccesoUsuario;
 
@@ -56,10 +57,10 @@ public class AccesoUsuarioControl {
 
         if (!cursor.moveToFirst()){
             db.insert("accesoUsuario", null, values);
-            mensaje = "Se ha concedido el permiso " + values.get("idOption") + " al usuario " + values.get("usuario");
+            mensaje = context.getText(R.string.permiso_concedido).toString();
         }
         else {
-            mensaje = "El usuario seleccionado ya posee este permiso.";
+            mensaje = context.getText(R.string.error_permiso).toString();
         }
 
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
@@ -74,10 +75,10 @@ public class AccesoUsuarioControl {
 
         if (cursor.moveToFirst()){
             db.delete("accesoUsuario", "usuario = ? AND idOption = ?", args);
-            mensaje = "Se ha quitado el permiso " + idOption + " al usuario " + usuario;
+            mensaje = context.getText(R.string.permiso_suprimido).toString();
         }
         else {
-            mensaje = "ERROR";
+            mensaje = context.getText(R.string.error).toString();
         }
 
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();

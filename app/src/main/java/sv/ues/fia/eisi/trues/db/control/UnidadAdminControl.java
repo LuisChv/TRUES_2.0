@@ -37,7 +37,7 @@ public class UnidadAdminControl {
         values.put("nombreUnidadAdmin", nombreUnidadAdmin);
 
         db.insert("unidadAdmin", null, values);
-        mensaje="Se ha creado con exito la unidad administrativa: " + nombreUnidadAdmin;
+        mensaje=context.getText(R.string.unidad_creada).toString();
 
         Cursor cursor2 = db.rawQuery("SELECT MAX(idUnidad) FROM unidadAdmin ",null);
         cursor2.moveToFirst();

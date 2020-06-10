@@ -46,7 +46,7 @@ public class EliminarRequisitoFragment extends DialogFragment {
         requisitoList = requisitoControl.consultarRequisitos(idTramite);
 
         requisitos = new ArrayList<>();
-        requisitos.add("Seleccione un requisito...");
+        requisitos.add(getText(R.string.seleccionar_requisito).toString());
         for (int i = 0; i<requisitoList.size(); i++){
             requisitos.add(requisitoList.get(i).getDescripcion());
         }

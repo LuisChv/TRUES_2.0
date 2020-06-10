@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Personal;
 import sv.ues.fia.eisi.trues.db.entity.PersonalUnidadAdmin;
@@ -35,12 +36,12 @@ public class PersonalUnidadAdminControl {
         ContentValues values = new ContentValues();
 
         if (cursor.moveToFirst()){
-            mensaje = "El personal ya estaba registrado en esta unidad";
+            mensaje = context.getText(R.string.error_personal).toString();
         } else {
             values.put("idPersonal",idPersonal);
             values.put("idUnidad",idUnidad);
             db.insert("personalUnidadAdmin",null,values);
-            mensaje = "Se ha registrado los datos";
+            mensaje = context.getText(R.string.cambios_guardados).toString();
         }
 
         db.close();
@@ -105,6 +106,6 @@ public class PersonalUnidadAdminControl {
         String args[] = {String.valueOf(idPersonal), String.valueOf(idUnidad)};
         db.delete("PersonalUnidadAdmin","idPersonal = ? AND idUnidad = ?", args);
         db.close();
-        Toast.makeText(context.getApplicationContext(), "Cambios guardados correctamente.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.cambios_guardados).toString(), Toast.LENGTH_SHORT).show();
     }
 }

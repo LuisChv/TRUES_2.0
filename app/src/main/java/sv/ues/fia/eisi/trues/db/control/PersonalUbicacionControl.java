@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.PersonalUbicacion;
 import sv.ues.fia.eisi.trues.db.entity.Ubicacion;
@@ -40,12 +41,12 @@ public class PersonalUbicacionControl {
 
         if(cursor.moveToFirst())
         {
-            mensaje = "Error: el registro ya existe";
+            mensaje = context.getText(R.string.error).toString();
         }
         else
         {
             db.insert("personalUbicacion", null, values);
-            mensaje="Registro guardado";
+            mensaje=context.getText(R.string.cambios_guardados).toString();
         }
         db.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
@@ -81,7 +82,7 @@ public class PersonalUbicacionControl {
         String args[] = {String.valueOf(idPersonal), String.valueOf(idUbicacion)};
         db.delete("personalUbicacion","idPersonal = ? AND idUbicacion = ?", args);
         db.close();
-        Toast.makeText(context.getApplicationContext(), "Cambios guardados correctamente.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.cambios_guardados).toString(), Toast.LENGTH_SHORT).show();
     }
 
     //CONSULTAR

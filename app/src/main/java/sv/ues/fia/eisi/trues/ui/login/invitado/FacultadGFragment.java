@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,9 +22,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +48,9 @@ public class FacultadGFragment extends DialogFragment {
     private List<Facultad> facultadList;
     private List<String> facultades;
     private SharedPreferences sharedPreferences;
-    private String username, nombre;
+    private String username, nombre, foto;
     private EditText editTextContraseña, editTextConfirmar;
+    private ImageView imageView;
     private Button login;
 
     public static FacultadGFragment newInstance() {
@@ -65,7 +70,7 @@ public class FacultadGFragment extends DialogFragment {
         facultadList = facultadControl.consultarFacultades();
 
         facultades = new ArrayList<>();
-        facultades.add("Seleccione una facultad...");
+        facultades.add(getText(R.string.seleccionar_facultad).toString());
         for (int i = 0; i<facultadList.size(); i++){
             facultades.add(facultadList.get(i).getNombreFacultad());
         }
@@ -78,9 +83,14 @@ public class FacultadGFragment extends DialogFragment {
 
         username = getArguments().getString("username", null);
         nombre = getArguments().getString("nombre", null);
+        foto = getArguments().getString("foto", null);
 
         editTextContraseña = view.findViewById(R.id.editTextTextPassword2);
         editTextConfirmar = view.findViewById(R.id.editTextTextConfirmar);
+        imageView = view.findViewById(R.id.imageView19);
+        if (foto != null){
+            Picasso.with(getActivity()).load(Uri.parse(foto)).error(R.drawable.ic_user).into(imageView);
+        }
         login = view.findViewById(R.id.login);
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +100,7 @@ public class FacultadGFragment extends DialogFragment {
                 String contraseña2 = editTextConfirmar.getText().toString();
                 Integer idFacultad = spinnerFacultad.getSelectedItemPosition();
 
-                if (contraseña.equals(contraseña2) && idFacultad > 0){
+                if (contraseña.equals(contraseña2) && idFacultad > 0 && contraseña.length() > 5){
                     Usuario usuario = new Usuario(username, contraseña, nombre, "", false, idFacultad);
 
                     UsuarioControl control = new UsuarioControl(getActivity());
@@ -106,7 +116,7 @@ public class FacultadGFragment extends DialogFragment {
 
                     Intent intent = new Intent(getActivity(), MenuAdminActivity.class);
 
-                    Toast.makeText(getActivity(), "¡Bienvenido " + usuario.getNombre() + "!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getText(R.string.bienvenido2) + usuario.getNombre() + "!", Toast.LENGTH_LONG).show();
 
                     startActivity(intent);
                     getActivity().finish();

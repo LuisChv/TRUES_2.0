@@ -56,7 +56,7 @@ public class QuitarUbicacionFragment extends DialogFragment implements AdapterVi
         ubicacionList = ubicacionControl.ObtenerUbicaciones(idPersonal);
 
         ubicaciones = new ArrayList<>();
-        ubicaciones.add("Seleccione una ubicación...");
+        ubicaciones.add(getText(R.string.seleccionar_ubicacion).toString());
         for (int i = 0; i<ubicacionList.size(); i++){
             ubicaciones.add(ubicacionList.get(i).getComponenteTematica());
         }

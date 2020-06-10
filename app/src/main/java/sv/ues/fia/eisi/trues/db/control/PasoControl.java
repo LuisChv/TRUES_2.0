@@ -34,7 +34,7 @@ public class PasoControl {
         db.insert("paso",null,values);
         db.close();
 
-        Toast.makeText(context.getApplicationContext(), "Guardado con éxito.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.cambios_guardados).toString(), Toast.LENGTH_SHORT).show();
     }
 
     //ELIMINAR
@@ -51,10 +51,10 @@ public class PasoControl {
                 db.delete("usuarioPaso","idPaso=?", values);
             }
             db.delete("paso", "idPaso = ?", values);
-            mensaje= "Se ha eliminado el paso: " + paso.getDescripcion();
+            mensaje= context.getText(R.string.paso_eliminado).toString();
         }
         else{
-            mensaje="Error al eliminar el mensaje, no existe o no se ha encontrado";
+            mensaje=context.getText(R.string.error).toString();
         }
         cursor.close();
         cursor1.close();
@@ -142,10 +142,10 @@ public class PasoControl {
 
         if (cursor.moveToFirst()){
             db.update("paso", values,"idPaso = ?", args);
-            mensaje = "Paso actualizado con exito";
+            mensaje = context.getText(R.string.cambios_guardados).toString();
         }
         else {
-            mensaje = "Paso no se encuentra o no existe";
+            mensaje = context.getText(R.string.error).toString();
         }
 
         cursor.close();

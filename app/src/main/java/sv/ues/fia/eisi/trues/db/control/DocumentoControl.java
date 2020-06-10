@@ -8,6 +8,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
 
@@ -29,12 +30,12 @@ public class DocumentoControl {
         Cursor cursor = db.query("documento",null,"url = ?",args,null,null,null);
         ContentValues values = new ContentValues();
         if(cursor.moveToFirst()){
-            mensaje = "El documento ya existe";
+            mensaje = context.getText(R.string.error_documento).toString();
         } else {
             values.put("url",url);
             values.put("nombreDocumento",nombreDocumento);
             db.insert("documento",null,values);
-            mensaje = "Se ha registrado un nuevo documento";
+            mensaje = context.getText(R.string.documento_creado).toString();
 
             Cursor cursor2 = db.rawQuery("SELECT MAX(idDocumento) FROM documento ",null);
 
@@ -113,9 +114,9 @@ public class DocumentoControl {
         values.put("nombreDocumento",nombreDocumento);
         if(cursor.moveToFirst()){
             db.update("documento",values,"idDocumento = ?", args);
-            mensaje = "Se ha actualizado con exito el documento";
+            mensaje = context.getText(R.string.cambios_guardados).toString();
         } else {
-            mensaje = "No se ha encontrado el documento";
+            mensaje = context.getText(R.string.error_actualizar).toString();
         }
         cursor.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();

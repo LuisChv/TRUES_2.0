@@ -50,7 +50,7 @@ public class FacultadPreferidaFragment extends DialogFragment implements Adapter
         facultadList = facultadControl.consultarFacultades();
 
         facultades = new ArrayList<>();
-        facultades.add("Seleccione una facultad...");
+        facultades.add(getText(R.string.seleccionar_facultad).toString());
         for (int i = 0; i<facultadList.size(); i++){
             facultades.add(facultadList.get(i).getNombreFacultad());
         }

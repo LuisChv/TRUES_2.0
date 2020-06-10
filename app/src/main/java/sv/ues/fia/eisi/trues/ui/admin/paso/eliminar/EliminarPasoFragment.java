@@ -45,7 +45,7 @@ public class EliminarPasoFragment extends DialogFragment {
         pasoList = pasoControl.obtenerPasos(idTramite);
 
         pasos = new ArrayList<>();
-        pasos.add("Seleccione un paso...");
+        pasos.add(getText(R.string.seleccionar_paso).toString());
         for (int i = 0; i<pasoList.size(); i++){
             pasos.add(pasoList.get(i).getDescripcion());
         }

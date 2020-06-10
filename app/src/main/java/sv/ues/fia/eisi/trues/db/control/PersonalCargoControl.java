@@ -9,6 +9,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
 import sv.ues.fia.eisi.trues.db.entity.Cargo;
 import sv.ues.fia.eisi.trues.db.entity.Personal;
@@ -34,12 +35,12 @@ public class PersonalCargoControl {
         Cursor cursor = db.query("personalCargo",columns,"idPersonal = ? AND idCargo = ?",args,null,null,null);
         ContentValues values = new ContentValues();
         if (cursor.moveToFirst()){
-            mensaje = "La persona ya tenia asignado este cargo";
+            mensaje = context.getText(R.string.error_personal_cargo).toString();
         } else {
             values.put("idPersonal",idPersonal);
             values.put("idCargo",idCargo);
             db.insert("personalCargo",null,values);
-            mensaje = "Se ha registrado el cargo del Empleado";
+            mensaje = context.getText(R.string.cambios_guardados).toString();
         }
 
         db.close();
@@ -89,7 +90,7 @@ public class PersonalCargoControl {
         String args[] = {String.valueOf(idPersonal), String.valueOf(idCargo)};
         db.delete("personalCargo","idPersonal = ? AND idCargo = ?", args);
         db.close();
-        Toast.makeText(context.getApplicationContext(), "Cambios guardados correctamente.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), context.getText(R.string.cambios_guardados).toString(), Toast.LENGTH_SHORT).show();
     }
 
     public List<Cargo> consultarCargo(int idPersonal){
