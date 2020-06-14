@@ -2,6 +2,7 @@ package sv.ues.fia.eisi.trues.db.control;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
@@ -211,5 +212,41 @@ public class TramiteControl {
         db.close();
 
         return tramiteList;
+    }
+
+    public List<Integer> tramitesActivos(Integer idFacultad){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        List<Integer> cantidades = new ArrayList<>();
+        String[] args = {String.valueOf(idFacultad)};
+        Cursor cursor = db.rawQuery(
+                "SELECT t.nombreTramite, " +
+                        "COUNT(t.idTramite) AS Cantidad " +
+                        "FROM usuarioTramite uT JOIN tramite t " +
+                        "WHERE uT.idTramite = t.idTramite AND t.idFacultad = ?" +
+                        "GROUP BY t.idTramite ORDER BY Cantidad", args);
+
+        while (cursor.moveToNext()){
+            cantidades.add(cursor.getInt(1));
+        }
+
+        return cantidades;
+    }
+
+    public List<String> tramitesActivos2(Integer idFacultad){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        List<String> nombre = new ArrayList<>();
+        String[] args = {String.valueOf(idFacultad)};
+        Cursor cursor = db.rawQuery(
+                "SELECT t.nombreTramite, " +
+                        "COUNT(t.idTramite) AS Cantidad " +
+                        "FROM usuarioTramite uT JOIN tramite t " +
+                        "WHERE uT.idTramite = t.idTramite AND t.idFacultad = ?" +
+                        "GROUP BY t.idTramite ORDER BY Cantidad", args);
+
+        while (cursor.moveToNext()){
+            nombre.add(cursor.getString(0));
+        }
+
+        return nombre;
     }
 }

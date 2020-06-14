@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.trues.ui.global;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -35,6 +38,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.control.AccesoUsuarioControl;
@@ -69,15 +76,17 @@ public class MenuAdminActivity extends AppCompatActivity implements
         PasoFragment.OnListFragmentInteractionListener,
         RequisitosFragment.OnListFragmentInteractionListener,
         DocumentoFragment.OnListFragmentInteractionListener,
-        PasoEstadoFragment.OnListFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener {
+        PasoEstadoFragment.OnListFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener, TextToSpeech.OnInitListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
     private SharedPreferences sharedPreferences;
-    private String usuario, nombreFacultad;
+    private String usuario, nombreFacultad, nombre;
     private Integer facultad;
     private AccesoUsuarioControl accesoUsuarioControl;
     private GoogleApiClient googleApiClient;
+    private TextToSpeech mTts;
+    private String mensaje = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +98,18 @@ public class MenuAdminActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intentActionRecognizeSpeech = new Intent(
+                        RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                intentActionRecognizeSpeech.putExtra(
+                        RecognizerIntent.EXTRA_LANGUAGE_MODEL, "es-MX");
+                try {
+                    startActivityForResult(intentActionRecognizeSpeech, 1);
+                } catch (ActivityNotFoundException a) {
+                    Toast.makeText(getApplicationContext(),
+                            "Tú dispositivo no soporta el reconocimiento por voz", Toast.LENGTH_SHORT).show();
+                }
             }
+
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -129,6 +148,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         usuario = sharedPreferences.getString("usuario", null);
         facultad = sharedPreferences.getInt("facultad", 0);
+        nombre = sharedPreferences.getString("nombre", null);
         accesoUsuarioControl = new AccesoUsuarioControl(this);
 
         navigationView.getMenu().findItem(R.id.nav_calendario).setOnMenuItemClickListener(this);
@@ -156,6 +176,175 @@ public class MenuAdminActivity extends AppCompatActivity implements
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 1:
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> speech = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    String strSpeech2Text = speech.get(0);
+
+                    if(strSpeech2Text != null){
+                        actionSpeech(strSpeech2Text);
+                    }
+                }
+                break;
+            case 2:
+                if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                    // success, create the TTS instance
+                    mTts = new TextToSpeech(this, this);
+                } else {
+                    // missing data, install it
+                    Intent installIntent = new Intent();
+                    installIntent.setAction(
+                            TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                    startActivity(installIntent);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onInit(int status) {
+        mTts.setLanguage(new Locale("es", "MX"));
+        mTts.speak(mensaje, TextToSpeech.QUEUE_ADD, null);
+    }
+
+    private void actionSpeech(String strSpeech2Text) {
+        Fragment fragment;
+        DialogFragment dialogFragment = null;
+        switch (strSpeech2Text){
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "Hola trues":
+            case "Hola trolls":
+            case "Hola":
+            case "Hola 3":
+                if(nombre != null) {
+                    mensaje = getText(R.string.hola) + nombre + "!" + getText(R.string.ayuda).toString();
+                } else {
+                    mensaje = getText(R.string.hola) + "!";
+                }
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "Muéstrame el calendario":
+            case "calendario":
+                fragment = new ActividadesFragment();
+                cambiarFragment(fragment);
+                mensaje = getText(R.string.speech_calendario).toString();
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "agregar actividad":
+            case "Quiero agregar una actividad":
+                if(usuario != null) {
+                    if (accesoUsuarioControl.existe(usuario, "90")) {
+                        dialogFragment = new AgregarActividadFragment();
+                        showDialog(dialogFragment);
+                        mensaje = getText(R.string.speech_agregar_actividad).toString();
+                    } else {
+                        mensaje = getText(R.string.sin_permisos).toString();
+                    }
+                } else {
+                    mensaje = getText(R.string.sin_permisos).toString();
+                }
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "tramites":
+            case "Muéstrame los trámites":
+                fragment = new TramitesFragment();
+                cambiarFragment(fragment);
+                mensaje = getText(R.string.speech_tramite).toString();
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "agregar trámite":
+            case "Quiero agregar un trámite":
+                if(usuario != null) {
+                    if (accesoUsuarioControl.existe(usuario, "00")) {
+                        dialogFragment = new AgregarTramiteFragment();
+                        showDialog(dialogFragment);
+                        mensaje = getText(R.string.speech_agregar_tramite).toString();
+                    } else {
+                        mensaje = getText(R.string.sin_permisos).toString();
+                    }
+                } else {
+                    mensaje = getText(R.string.sin_permisos).toString();
+                }
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "mis trámites":
+            case "Muéstrame mis trámites":
+                if(usuario != null) {
+                    if (accesoUsuarioControl.existe(usuario,"10")) {
+                        fragment = new MisTramitesFragment();
+                        cambiarFragment(fragment);
+                        mensaje = getText(R.string.speech_mis_tramites).toString();
+                    } else {
+                        mensaje = getText(R.string.sin_permisos).toString();
+                    }
+                } else {
+                    mensaje = getText(R.string.sin_permisos).toString();
+                }
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "administración":
+            case "Llévame a la administración":
+                if(usuario != null) {
+                    if (accesoUsuarioControl.existe(usuario,"20")) {
+                        fragment = new AdministracionFragment();
+                        cambiarFragment(fragment);
+                        mensaje = getText(R.string.speech_administracion).toString();
+                    } else {
+                        mensaje = getText(R.string.sin_permisos).toString();
+                    }
+                } else {
+                    mensaje = getText(R.string.sin_permisos).toString();
+                }
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "cerrar sesión":
+            case "quiero cerrar sesión":
+                mensaje = getText(R.string.speech_cerrar_sesion).toString();
+                logout();
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "ayuda":
+            case "quién eres":
+            case "Háblame de ti":
+            case "cuál es tu función":
+            case "cuál es su función":
+                mensaje = getText(R.string.sobre_mi).toString();
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            case "Quién es tu padre":
+                mensaje = getText(R.string.padre).toString();
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////
+            default:
+                mensaje = getText(R.string.speech_lo_siento).toString();
+                break;
+            ////////////////////////////////////////////////////////////////////////////////////////
+
+        }
+        Intent checkIntent = new Intent();
+        checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+        startActivityForResult(checkIntent, 2);
+        //Toast.makeText(getApplicationContext(), strSpeech2Text, Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -220,7 +409,9 @@ public class MenuAdminActivity extends AppCompatActivity implements
     }
 
     private void cambiarFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragment).commit();
+        if (fragment != null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragment).commit();
+        }
     }
     private void showDialog(DialogFragment dialogFragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -301,4 +492,5 @@ public class MenuAdminActivity extends AppCompatActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 }

@@ -276,8 +276,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
                 }
                 else {
                     String foto = null;
-                    if (profile.getProfilePictureUri(150, 150) != null){
-                        foto = profile.getProfilePictureUri(150, 150).toString();
+                    if (profile.getProfilePictureUri(256, 256) != null){
+                        foto = profile.getProfilePictureUri(256, 256).toString();
                     }
                     registrarUsuarioG(
                             profile.getFirstName()+profile.getLastName() + "@facebook.com",

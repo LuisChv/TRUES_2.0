@@ -172,6 +172,23 @@
     <string name="seleccionar_ubicacion">Seleccione una ubicación...</string>
     <string name="seleccionar_unidad">Seleccione una unidad...</string>
     <string name="usuario_incorrecto">Usuario o contraseña incorrectos.</string>
+    <string name="top_tramites">Tramites realizados con frecuencia</string>
+    <string name="touch">Toque el gráfico para obtener mas información.</string>
+    <string name="top_alumnos">Alumnos con mayor actividad.</string>
+    <string name="hola">"¡Hola "</string>
+    <string name="speech_calendario">Aquí tienes el calendario de tu facultad.</string>
+    <string name="speech_agregar_actividad">Está bien jefe, Aquí puedes agregar una actividad.</string>
+    <string name="speech_tramite">Aquí tienes los trámites disponibles en tu facultad.</string>
+    <string name="speech_agregar_tramite">Está bien jefe, Aquí puedes agregar un trámite.</string>
+    <string name="speech_mis_tramites">Aquí tienes tus trámites.</string>
+    <string name="speech_cerrar_sesion">Cerrando sesión... ¡Hasta luego!</string>
+    <string name="speech_lo_siento">"Lo siento jefe, no te entendí. "</string>
+    <string name="speech_no_entendi">, no te entendí.</string>
+    <string name="sin_permisos">Lo siento, pero no tienes permisos para realizar esta acción.</string>
+    <string name="ayuda">¿En qué puedo ayudarte?</string>
+    <string name="sobre_mi">Mis siglas significan Trámites de la Universidad de El Salvador y soy una aplicación que te ayudará a acceder a la información acerca de los procesos que se realizan aquí. Conmigo podrás obtener los datos necesarios sobre requisitos, pasos, documentos y ubicaciones. ¡Estoy para servirte!</string>
+    <string name="padre">Técnicamente serían unos estudiantes de la Facultad de Ingeniería y Arquitectura en la Universidad de El Salvador...</string>
+    <string name="speech_administracion">Ésta es la sección administrativa</string>
 
 
 </resources>

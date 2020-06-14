@@ -16,13 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sv.ues.fia.eisi.trues.R;
+import sv.ues.fia.eisi.trues.ui.admin.estadisticas.Estadistica2Fragment;
+import sv.ues.fia.eisi.trues.ui.admin.estadisticas.EstadisticaFragment;
 import sv.ues.fia.eisi.trues.ui.admin.personal.AgregarPersonalFragment;
 import sv.ues.fia.eisi.trues.ui.admin.personal.lista.PersonalFragment;
 
 public class AdministracionFragment extends Fragment implements View.OnClickListener {
 
     private View view;
-    private CardView cardView1, cardView2;
+    private CardView cardView1, cardView2, cardView3, cardView4;
 
     public static AdministracionFragment newInstance() {
         return new AdministracionFragment();
@@ -37,9 +39,13 @@ public class AdministracionFragment extends Fragment implements View.OnClickList
 
         cardView1 = view.findViewById(R.id.cardView1);
         cardView2 = view.findViewById(R.id.cardView2);
+        cardView3 = view.findViewById(R.id.cardView3);
+        cardView4 = view.findViewById(R.id.cardView4);
 
         cardView1.setOnClickListener(this);
         cardView2.setOnClickListener(this);
+        cardView3.setOnClickListener(this);
+        cardView4.setOnClickListener(this);
 
         return view;
     }
@@ -60,6 +66,12 @@ public class AdministracionFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.cardView2:
                 fragment = new PersonalFragment();
+                break;
+            case R.id.cardView3:
+                dialogFragment = new EstadisticaFragment();
+                break;
+            case R.id.cardView4:
+                dialogFragment = new Estadistica2Fragment();
                 break;
         }
         if (dialogFragment != null){

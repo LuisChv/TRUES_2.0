@@ -200,4 +200,40 @@ public class UsuarioControl {
 
         db.update("usuario", values, "usuario = ?", args);
     }
+
+    public List<Integer> usuariosActivos(Integer idFacultad){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        List<Integer> cantidades = new ArrayList<>();
+        String[] args = {String.valueOf(idFacultad)};
+        Cursor cursor = db.rawQuery(
+                "SELECT u.usuario, " +
+                        "COUNT(u.usuario) AS Cantidad " +
+                        "FROM usuarioTramite uT JOIN usuario u " +
+                        "WHERE uT.usuario = u.usuario AND u.idFacultad = ?" +
+                        "GROUP BY u.usuario ORDER BY Cantidad", args);
+
+        while (cursor.moveToNext()){
+            cantidades.add(cursor.getInt(1));
+        }
+
+        return cantidades;
+    }
+
+    public List<String> usuariosActivos2(Integer idFacultad){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        List<String> nombre = new ArrayList<>();
+        String[] args = {String.valueOf(idFacultad)};
+        Cursor cursor = db.rawQuery(
+                "SELECT u.usuario, " +
+                        "COUNT(u.usuario) AS Cantidad " +
+                        "FROM usuarioTramite uT JOIN usuario u " +
+                        "WHERE uT.usuario = u.usuario AND u.idFacultad = ?" +
+                        "GROUP BY u.usuario ORDER BY Cantidad", args);
+
+        while (cursor.moveToNext()){
+            nombre.add(cursor.getString(0));
+        }
+
+        return nombre;
+    }
 }
