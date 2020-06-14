@@ -426,6 +426,10 @@ public class MenuAdminActivity extends AppCompatActivity implements
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("usuario", null);
         editor.putBoolean("tipoUsuario", false);
+        editor.putString("nombre", null);
+        editor.putString("apellido", null);
+        editor.putInt("facultad", -1);
+
         editor.commit();
 
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
