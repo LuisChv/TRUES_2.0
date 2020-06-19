@@ -2098,6 +2098,31 @@ public class LlenarBD {
         db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('121','Acceso - Consultar');");
         db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('123','Acceso - Eliminar');");
 
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('130','Personal - Crear');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('131','Personal - Consultar');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('132','Personal - Actualizar');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('133','Personal - Eliminar');");
+
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('140','Unidad Admin - Crear');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('141','Unidad Admin - Consultar');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('143','Unidad Admin - Eliminar');");
+
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('150','Cargo - Crear');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('151','Cargo - Consultar');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('153','Cargo - Eliminar');");
+
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('160','PersonalCargo - Crear');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('161','PersonalCargo - Consultar');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('163','PersonalCargo - Eliminar');");
+
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('170','PersonalUbicación - Crear');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('171','PersonalUbicación - Consultar');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('173','PersonalUbicación - Eliminar');");
+
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('180','PersonalUnidad - Crear');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('181','PersonalUnidad - Consultar');");
+        db.execSQL("INSERT INTO opcionCrud(idOpcion,descOpcion) VALUES ('183','PersonalUnidad - Eliminar');");
+
         db.execSQL("INSERT INTO personalCargo(idPersonalCargo,idCargo,idPersonal) VALUES (1,1,1);");
         db.execSQL("INSERT INTO personalCargo(idPersonalCargo,idCargo,idPersonal) VALUES (2,2,2);");
         db.execSQL("INSERT INTO personalCargo(idPersonalCargo,idCargo,idPersonal) VALUES (3,3,3);");

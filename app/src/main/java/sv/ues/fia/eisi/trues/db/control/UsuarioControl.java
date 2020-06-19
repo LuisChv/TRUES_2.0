@@ -91,6 +91,25 @@ public class UsuarioControl {
                 accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "121");
                 accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "120");
                 accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "123");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "130");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "131");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "132");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "133");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "140");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "141");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "143");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "151");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "150");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "153");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "161");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "160");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "163");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "171");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "170");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "173");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "181");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "180");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "183");
 
             }
             else {
@@ -110,6 +129,12 @@ public class UsuarioControl {
                 accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "91");
                 accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "101");
                 accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "111");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "131");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "141");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "151");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "161");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "171");
+                accesoUsuarioControl.CrearAccesoUsuario(usuario.getUsuario(), "181");
             }
 
             mensaje = "Usuario " + usuario.getUsuario() + " registrado con éxito.";

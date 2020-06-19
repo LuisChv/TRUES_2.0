@@ -163,7 +163,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
             if (accesoUsuarioControl.existe(usuario, "00")){
                 navigationView.getMenu().findItem(R.id.nav_agregar_tramite).setVisible(true);
             }
-            if (accesoUsuarioControl.existe(usuario, "90")){
+            if (accesoUsuarioControl.existe(usuario, "100")){
                 navigationView.getMenu().findItem(R.id.nav_agregar_actividad).setVisible(true);
             }
             if (accesoUsuarioControl.existe(usuario, "20")){
@@ -243,7 +243,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
             case "agregar actividad":
             case "Quiero agregar una actividad":
                 if(usuario != null) {
-                    if (accesoUsuarioControl.existe(usuario, "90")) {
+                    if (accesoUsuarioControl.existe(usuario, "100")) {
                         dialogFragment = new AgregarActividadFragment();
                         showDialog(dialogFragment);
                         mensaje = getText(R.string.speech_agregar_actividad).toString();
