@@ -40,7 +40,7 @@ public class ActualizarPasoFragment extends DialogFragment implements View.OnCli
     private Integer idFacultad;
     private List<Personal> personalList;
     private List<String> nombrePersonal;
-    private Integer idPaso, position;
+    private Integer idPaso, position = 0;
     private Paso paso;
     private PasoControl pasoControl;
     private TextView textView;
