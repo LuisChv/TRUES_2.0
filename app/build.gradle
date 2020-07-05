@@ -49,6 +49,7 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.6'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.lecho:hellocharts-android:v1.5.8'
+    implementation 'com.google.firebase:firebase-messaging:20.1.7'
 }
 
 
