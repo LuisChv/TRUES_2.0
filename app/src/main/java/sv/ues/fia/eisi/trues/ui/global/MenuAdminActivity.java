@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import sv.ues.fia.eisi.trues.R;
+import sv.ues.fia.eisi.trues.db.SyncReadFiles;
 import sv.ues.fia.eisi.trues.db.control.AccesoUsuarioControl;
 import sv.ues.fia.eisi.trues.db.control.FacultadControl;
 import sv.ues.fia.eisi.trues.db.entity.Actividad;
@@ -87,6 +88,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
     private GoogleApiClient googleApiClient;
     private TextToSpeech mTts;
     private String mensaje = null;
+    private SyncReadFiles syncReadFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -354,6 +356,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
             if (accesoUsuarioControl.existe(usuario, "121")){
                 menu.findItem(R.id.gestionarPermisos).setVisible(true);
             }
+            menu.findItem(R.id.sincronizar).setVisible(true);
         }
         return true;
     }
@@ -365,6 +368,10 @@ public class MenuAdminActivity extends AppCompatActivity implements
                 PermisosFragment permisosFragment = new PermisosFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 permisosFragment.show(fragmentManager,"dialog");
+                break;
+            case R.id.sincronizar:
+                syncReadFiles = new SyncReadFiles();
+                syncReadFiles.SubirCambios(getApplicationContext());
                 break;
         }
         return super.onOptionsItemSelected(item);

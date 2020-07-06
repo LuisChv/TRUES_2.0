@@ -5,13 +5,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.control.ActividadControl;
@@ -21,8 +25,13 @@ import sv.ues.fia.eisi.trues.db.entity.ActividadTramite;
 import sv.ues.fia.eisi.trues.ui.global.calendario.lista.ActividadesFragment.OnListFragmentInteractionListener;
 import sv.ues.fia.eisi.trues.ui.global.tramite.lista.TramitesFragment;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.List;
-
 /**
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
@@ -113,6 +122,13 @@ public class MyActividadRecyclerViewAdapter extends RecyclerView.Adapter<MyActiv
     public void removeItem(int position){
         ActividadControl actividadControl = new ActividadControl(context);
         actividadControl.EliminarActividad(mValues.get(position).getIdActividad());
+        if (verificarInternet()) {
+            actividadControl.EliminarActividadWS(mValues.get(position).getIdActividad());
+        } else {
+            String idActividad = String.valueOf(mValues.get(position).getIdActividad());
+            String parametros = "delete;" + idActividad;
+            writeToFile(parametros, context, "Actividad");
+        }
 
         mValues.remove(position);
         notifyItemRemoved(position);
@@ -128,7 +144,16 @@ public class MyActividadRecyclerViewAdapter extends RecyclerView.Adapter<MyActiv
                 actividad.getNombreActividad(), actividad.getInicio(), actividad.getFin());
 
         ActividadTramiteControl actividadTramiteControl = new ActividadTramiteControl(context);
-
+        if (verificarInternet()) {
+            actividadControl.CrearActividadWS(actividad.getIdActividad(), actividad.getIdFacultad(),
+                    actividad.getNombreActividad(), actividad.getInicio(), actividad.getFin());
+        } else {
+            String parametros = "insert;" + actividad.getIdActividad().toString()
+                    + ";" + actividad.getIdFacultad().toString()
+                    + ";" + actividad.getNombreActividad() + ";" + actividad.getInicio()
+                    + ";" + actividad.getFin();
+            writeToFile(parametros, context, "Actividad");
+        }
         for (int i = 0; i<actividadTramites.size(); i++){
             actividadTramiteControl.CrearActividadTramite(
                     actividadTramites.get(i).getIdActividad(), actividadTramites.get(i).getIdTramite());
@@ -138,5 +163,75 @@ public class MyActividadRecyclerViewAdapter extends RecyclerView.Adapter<MyActiv
 
     public void actualizar(){
         notifyDataSetChanged();
+    }
+    private boolean verificarInternet() {
+        Boolean HayInternet;
+        if (isNetDisponible() && isOnlineNet()) {
+            //Toast.makeText(context, "Hay internet y está conectado", Toast.LENGTH_SHORT).show();
+            HayInternet = true;
+        } else {
+            //Toast.makeText(context, "No hay internet y está conectado", Toast.LENGTH_SHORT).show();
+            HayInternet = false;
+        }
+        return HayInternet;
+    }
+
+    private boolean isNetDisponible() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+
+    private boolean isOnlineNet() {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+            int val = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void writeToFile(String data, Context context, String archivo) {
+        //Toast.makeText(context,readFromFile(context),Toast.LENGTH_LONG).show();
+        String prueba = readFromFile(context, archivo) + data;
+
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(archivo + ".txt", Context.MODE_PRIVATE));
+            outputStreamWriter.append(prueba);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+        String after = readFromFile(context, archivo);
+        Toast.makeText(context, after, Toast.LENGTH_SHORT).show();
+    }
+
+    private String readFromFile(Context context, String archivo) {
+        String ret = "";
+        try {
+            InputStream inputStream = context.openFileInput(archivo + ".txt");
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    //stringBuilder.append("\n").append(receiveString);
+                    stringBuilder.append(receiveString).append("\n");
+                }
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("AgregarCargoFragment", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("AgregarCargoFragment", "Can not read file: " + e.toString());
+        }
+        //Toast.makeText(context,ret,Toast.LENGTH_LONG).show();
+        return ret;
     }
 }

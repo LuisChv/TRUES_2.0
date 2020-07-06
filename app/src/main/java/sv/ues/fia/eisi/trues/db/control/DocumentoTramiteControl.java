@@ -6,11 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
+import sv.ues.fia.eisi.trues.db.VolleySingleton;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
 import sv.ues.fia.eisi.trues.db.entity.DocumentoTramite;
 
@@ -43,6 +55,74 @@ public class DocumentoTramiteControl {
         }
         db.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    public void crearDocumentoTramiteDlwd(int idDocumentoTramite,int idDocumento, int idTramite){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        String mensaje;
+        String[] args = {String.valueOf(idDocumentoTramite),String.valueOf(idDocumento),String.valueOf(idTramite)};
+        String[] columns = {"idDocumentoTramite","idDocumento, idTramite"};
+        Cursor cursor = db.query("documentoTramite",columns,"idDocumentoTramite = ?",args,null,null,null);
+        ContentValues values = new ContentValues();
+        if(cursor.moveToFirst()){
+            mensaje = "Ya existe este registro";
+        } else {
+            values.put("idDocumento",idDocumento);
+            values.put("idTramite",idTramite);
+            db.insert("documentoTramite",null,values);
+            mensaje = "Se ha registrado un nuevo Documento al tramite";
+        }
+        db.close();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    public void crearDocumentoTramiteWS(final int idDocumento, final int idTramite){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/documentoTramite.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        Toast.makeText(context,"Relacion Guardada en MySQL",Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro ya existe en MySQL"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos."
+                            + response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        , Toast.LENGTH_SHORT).show();
+                //+ error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "create");
+                params.put("idDocumento",String.valueOf(idDocumento));
+                params.put("idTramite",String.valueOf(idTramite));
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 
     //Read
@@ -128,5 +208,56 @@ public class DocumentoTramiteControl {
         db.delete("documentoTramite","idDocumento = ? AND idTramite = ?",args);
         db.close();
         Toast.makeText(context.getApplicationContext(), context.getText(R.string.documento_eliminado).toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void eliminarDocumentoTramiteWS(final int idDocumento, final int idTramite){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/documentoTramite.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        //Toast.makeText(context,"RelacionEliminada de MySQL"+response.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"RelacionEliminada de MySQL",Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro ya existe"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos"
+                            //+ response.toString(), Toast.LENGTH_SHORT).show();
+                            , Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        //+ error.toString(), Toast.LENGTH_SHORT).show();
+                        , Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "delete");
+                params.put("idDocumento",String.valueOf(idDocumento));
+                params.put("idTramite",String.valueOf(idTramite));
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 }

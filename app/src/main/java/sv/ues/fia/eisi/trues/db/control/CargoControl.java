@@ -6,11 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
+import sv.ues.fia.eisi.trues.db.VolleySingleton;
 import sv.ues.fia.eisi.trues.db.entity.Cargo;
 
 public class CargoControl {
@@ -44,6 +56,78 @@ public class CargoControl {
         db.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
         return ultimoId;
+    }
+    public Integer CrearCargoDwld(int idCargo, String nombreCargo){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        String mensaje;
+        Integer ultimoId = null;
+        String[] arg = {String.valueOf(idCargo),nombreCargo};
+        Cursor cursor = db.query("cargo",null,"idCargo=? and nombreCargo = ?",arg,null,null,null);
+        ContentValues values =  new ContentValues();
+        values.put("nombreCargo", nombreCargo);
+        if (cursor.moveToFirst()){
+            mensaje = "Error al crear el Cargo";
+            ActualizarCargo(idCargo,nombreCargo);
+        }else {
+            db.insert("cargo", null, values);
+            Cursor cursor2 = db.rawQuery("SELECT MAX(idCargo) FROM cargo ",null);
+            cursor2.moveToFirst();
+            ultimoId = cursor2.getInt(0);
+            cursor2.close();
+            mensaje = "Se a creado el cargo "+ultimoId+" con éxito.";
+        }
+        cursor.close();
+        db.close();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+        return ultimoId;
+    }
+
+    public void CrearCargoWS(final Integer idCargo, final String nombreCargo){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/cargo.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+                    if (status.equals("ok")) {
+                        //Toast.makeText(context,"Guardado"+response.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Se subió correctamente a MySQL",Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        //Toast.makeText(context, "Registro ya existe", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos."
+                            //+ response.toString(), Toast.LENGTH_SHORT).show();
+                            , Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        //+ error.toString(), Toast.LENGTH_SHORT).show();
+                        , Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "create");
+                params.put("idCargo",String.valueOf(idCargo));
+                params.put("nombreCargo",nombreCargo);
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 
     public String ActualizarCargo(int idCargo, String nombreCargo){

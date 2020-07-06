@@ -6,11 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
+import sv.ues.fia.eisi.trues.db.VolleySingleton;
 import sv.ues.fia.eisi.trues.db.entity.Ubicacion;
 
 public class UbicacionControl {
@@ -51,6 +63,91 @@ public class UbicacionControl {
         cursor.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
         return ultimoId;
+    }
+    public void CrearUbicacionDwnl(int idUbicacion,float longitud, float latitud, float altitud, String componenteTamatica)
+    {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        String mensaje;
+        Integer ultimoId = null;
+        String[] args = {String.valueOf(idUbicacion)};
+        Cursor cursor= db.query("ubicacion", null, "idUbicacion = ?", args, null,null, null);
+        ContentValues values =  new ContentValues();
+        values.put("idUbicacion",idUbicacion);
+        values.put("longitud", longitud);
+        values.put("latitud", latitud);
+        values.put("altitud", altitud);
+        values.put("componenteTematica", componenteTamatica);
+        if (cursor.moveToFirst()){
+            mensaje = "Error: la ubicacion ya existe";
+            ActualizarUbicacion(idUbicacion,longitud,latitud,altitud,componenteTamatica);
+        }else {
+            db.insert("ubicacion", null, values);
+            mensaje = "Ubicacion guardada con exito";
+
+            Cursor cursor2 = db.rawQuery("SELECT MAX(idUbicacion) FROM ubicacion ",null);
+
+            cursor2.moveToFirst();
+            ultimoId = cursor2.getInt(0);
+            cursor2.close();
+        }
+        db.close();
+        cursor.close();
+        ///Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    public void CrearUbicacionWS(final Integer idUbicacion, final float longitud, final float latitud, final float altitud, final String componenteTamatica){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/ubicacion.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        //Toast.makeText(context,"Ubicacion guardada correctamente en MySQL"+response.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Ubicacion guardada correctamente en MySQL",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context,"Guardado"+response.toString(),Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro ya existe"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos."
+                            , Toast.LENGTH_SHORT).show();
+                    //+ response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        , Toast.LENGTH_SHORT).show();
+                //+ error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "create");
+                params.put("idUbicacion",String.valueOf(idUbicacion));
+                params.put("longitud",String.valueOf(longitud));
+                params.put("latitud",String.valueOf(latitud));
+                params.put("altitud",String.valueOf(altitud));
+                params.put("componenteTematica",componenteTamatica);
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 
     public  String ActualizarUbicacion(int idUbicacion, float longitud, float latitud, float altitud, String componenteTamatica)

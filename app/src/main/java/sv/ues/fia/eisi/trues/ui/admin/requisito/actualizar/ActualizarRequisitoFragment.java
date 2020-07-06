@@ -2,13 +2,23 @@ package sv.ues.fia.eisi.trues.ui.admin.requisito.actualizar;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +89,14 @@ public class ActualizarRequisitoFragment extends DialogFragment {
                 String descripcion = editTextDescripcion.getText().toString();
                 if (!descripcion.isEmpty()){
                     requisitoControl.actualizarRequisito(idRequisito, descripcion);
+                    if (verificarInternet()) {
+                        requisitoControl.actualizarRequisitoWS(idRequisito, descripcion);
+                    } else {
+                        //String idPersonall = String.valueOf(personalList.get(idPersonal-1).getIdPersonal());
+                        String parametros = "update;" +idRequisito.toString()
+                                + ";" + descripcion;
+                        writeToFile(parametros, context, "Requisito");
+                    }
 
                     Bundle bundle = new Bundle();
                     bundle.putInt("idTramite", getArguments().getInt("idTramite", -1));
@@ -108,6 +126,73 @@ public class ActualizarRequisitoFragment extends DialogFragment {
         builder.setView(view);
         return builder.create();
     }
+    private boolean verificarInternet() {
+        Boolean HayInternet;
+        if (isNetDisponible() && isOnlineNet()) {
+            //Toast.makeText(context, "Hay internet y está conectado", Toast.LENGTH_SHORT).show();
+            HayInternet = true;
+        } else {
+            //Toast.makeText(context, "No hay internet y está conectado", Toast.LENGTH_SHORT).show();
+            HayInternet = false;
+        }
+        return HayInternet;
+    }
+    private boolean isNetDisponible() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+        return (actNetInfo != null && actNetInfo.isConnected());
+    }
+    private boolean isOnlineNet() {
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+            int val = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    private void writeToFile(String data, Context context, String archivo) {
+        //Toast.makeText(context,readFromFile(context),Toast.LENGTH_LONG).show();
+        String prueba = readFromFile(context, archivo) + data;
+
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(archivo + ".txt", Context.MODE_PRIVATE));
+            outputStreamWriter.append(prueba);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+        String after = readFromFile(context, archivo);
+        Toast.makeText(context, after, Toast.LENGTH_SHORT).show();
+    }
+
+    private String readFromFile(Context context, String archivo) {
+        String ret = "";
+        try {
+            InputStream inputStream = context.openFileInput(archivo + ".txt");
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    //stringBuilder.append("\n").append(receiveString);
+                    stringBuilder.append(receiveString).append("\n");
+                }
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("AgregarRequisitoFragmnt", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("AgregarRequisitoFragmnt", "Can not read file: " + e.toString());
+        }
+        //Toast.makeText(context,ret,Toast.LENGTH_LONG).show();
+        return ret;
+    }
 
 }

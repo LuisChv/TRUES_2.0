@@ -190,6 +190,8 @@
     <string name="padre">Técnicamente serían unos estudiantes de la Facultad de Ingeniería y Arquitectura en la Universidad de El Salvador...</string>
     <string name="speech_administracion">Ésta es la sección administrativa</string>
     <string name="notification_channel_group_general">General</string>
+    <string name="IP">https://eisi.fia.ues.edu.sv/eisi06</string>
+    <string name="sincronizar">Sincronizar</string>
 
 
 </resources>

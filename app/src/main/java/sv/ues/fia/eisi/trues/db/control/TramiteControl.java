@@ -7,11 +7,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
+import sv.ues.fia.eisi.trues.db.VolleySingleton;
 import sv.ues.fia.eisi.trues.db.entity.ActividadTramite;
 import sv.ues.fia.eisi.trues.db.entity.Tramite;
 
@@ -61,6 +73,96 @@ public class TramiteControl {
         return ultimoId;
     }
 
+    public void crearTramiteDwld(int idTramite,int idFacultad, String nombreTramite)
+    {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        String mensaje;
+        String[] args = {String.valueOf(idTramite)};
+        Integer ultimoId = null;
+
+        Cursor cursor= db.query("tramite", null, "idTramite=?", args, null,null, null);
+
+        ContentValues values =  new ContentValues();
+        values.put("idTramite",idTramite);
+        values.put("idFacultad", idFacultad);
+        values.put("nombreTramite",nombreTramite);
+
+        if(cursor.moveToFirst())
+        {
+            mensaje = "Error: el tramite ya existe";
+            actualizarTramite(idTramite,idFacultad,nombreTramite);
+        }
+        else
+        {
+            db.insert("tramite", null, values);
+            mensaje="Nuevo tramite guardado correctamente";
+
+            Cursor cursor2 = db.rawQuery("SELECT MAX(idTramite) FROM tramite ",null);
+
+            cursor2.moveToFirst();
+            ultimoId = cursor2.getInt(0);
+            cursor2.close();
+        }
+        cursor.close();
+        db.close();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+        //return ultimoId;
+    }
+
+    public Integer crearTramiteWS(final Integer idTramite, final int idFacultad, final String nombreTramite){
+        Integer ultimoId = null;
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/tramite.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        //Toast.makeText(context,"Guardado"+response.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Tramite subido a MySQL",Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro ya existe"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos."
+                            , Toast.LENGTH_SHORT).show();
+                    //+ response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        , Toast.LENGTH_SHORT).show();
+                //+ error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "create");
+                params.put("idTramite",String.valueOf(idTramite));
+                params.put("idFacultad",String.valueOf(idFacultad));
+                params.put("nombreTramite", nombreTramite);
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
+        return ultimoId;
+    }
+
     //ACTUALIZAR
     public String actualizarTramite(int idTramite, int idFacultad, String nombreTramite)
     {
@@ -86,6 +188,60 @@ public class TramiteControl {
         db.close();
         return mensaje;
 
+    }
+
+    public void actualizarTramiteWS(final int idTramite, final int idFacultad, final String nombreTramite){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/tramite.php";
+        //RequestQueue requestQueue = new Volley.newRequestQueue(context);
+        //RequestQueue requestQueue = new Volley().newRequestQueue(context);
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        //Toast.makeText(context,"Tramite actualizado en MySQL"+response.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Tramite actualizado en MySQL",Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro ya existe"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos:\n"
+                            , Toast.LENGTH_SHORT).show();
+                    //+ response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        , Toast.LENGTH_SHORT).show();
+                //+ error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "update");
+                params.put("idTramite",String.valueOf(idTramite));
+                params.put("idFacultad", String.valueOf(idFacultad));
+                params.put("nombreTramite", nombreTramite);
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 
     //ELIMINAR
@@ -153,6 +309,56 @@ public class TramiteControl {
 
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
+
+    public void eliminarTramiteWS(final int idTramite){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/tramite.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        Toast.makeText(context,"Tramite eliminado de MySQL"+response.toString(),Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro no existe"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos."
+                            , Toast.LENGTH_SHORT).show();
+                    //+ response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        , Toast.LENGTH_SHORT).show();
+                //+ error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "delete");
+                params.put("idTramite",String.valueOf(idTramite));
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
+    }
+
 
     //CONSULTAR
 

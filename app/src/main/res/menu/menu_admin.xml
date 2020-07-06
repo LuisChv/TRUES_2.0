@@ -6,4 +6,8 @@
         android:id="@+id/gestionarPermisos"
         android:title="@string/gestionar_permisos"
         android:visible="false" />
+    <item
+        android:id="@+id/sincronizar"
+        android:title="@string/sincronizar"
+        android:visible="true" />
 </menu>

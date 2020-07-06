@@ -6,11 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.DatabaseHelper;
+import sv.ues.fia.eisi.trues.db.VolleySingleton;
 import sv.ues.fia.eisi.trues.db.entity.Personal;
 import sv.ues.fia.eisi.trues.db.entity.PersonalUnidadAdmin;
 import sv.ues.fia.eisi.trues.db.entity.UnidadAdmin;
@@ -46,6 +58,78 @@ public class PersonalUnidadAdminControl {
 
         db.close();
         Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    public void crearPersonalUnidadDwnl(int idPersonalUnidad,int idPersonal, int idUnidad){
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        String mensaje;
+        String[] args = {String.valueOf(idPersonal), String.valueOf(idUnidad)};
+
+        Cursor cursor = db.query("personalUnidadAdmin", null,"idPersonal = ? AND idUnidad = ?",args,null,null,null);
+        ContentValues values = new ContentValues();
+
+        if (cursor.moveToFirst()){
+            mensaje = "El personal ya estaba registrado en esta unidad";
+        } else {
+            values.put("idPersonalAdmin",idPersonalUnidad);
+            values.put("idPersonal",idPersonal);
+            values.put("idUnidad",idUnidad);
+            db.insert("personalUnidadAdmin",null,values);
+            mensaje = "Se ha registrado los datos";
+        }
+
+        db.close();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+    }
+    public void crearPersonalUnidadWS(final int idPersonal, final int idUnidad){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/personalUnidadAdmin.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        //Toast.makeText(context,"Relacion creada correctamente en MySQL"+response.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Relacion creada correctamente en MySQL",Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro ya existe"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos."
+                            ,Toast.LENGTH_SHORT).show();
+                    //+ response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        , Toast.LENGTH_SHORT).show();
+                //+ error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "create");
+                params.put("idPersonal",String.valueOf(idPersonal));
+                params.put("idUnidad",String.valueOf(idUnidad));
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 
     //No se que recuperar con el Read jsjsjsjs xd
@@ -107,5 +191,56 @@ public class PersonalUnidadAdminControl {
         db.delete("PersonalUnidadAdmin","idPersonal = ? AND idUnidad = ?", args);
         db.close();
         Toast.makeText(context.getApplicationContext(), context.getText(R.string.cambios_guardados).toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void eliminarPersonalUnidadWS(final int idPersonal, final int idUnidad){
+        String ip = context.getString(R.string.IP);
+        String URL = ip+"/TRUES/personalUnidadAdmin.php";
+        Response.Listener responseListener = new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                try {
+                    JSONObject jsonObject = new JSONObject((String) response);
+                    String status = jsonObject.getString("status");
+
+                    if (status.equals("ok")) {
+                        //JSONObject datos = jsonObject.getJSONObject("result");
+                        //Toast.makeText(context,"Relacion eliminada correctamente de MySQL"+response.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"Relacion eliminada correctamente de MySQL",Toast.LENGTH_SHORT).show();
+                    } else if (status.equals("err")) {
+                        Toast.makeText(context, "Registro NO existe"
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Hay un problema con la base de datos."
+                            , Toast.LENGTH_SHORT).show();
+                    //+ response.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Response.ErrorListener ErrorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context,
+                        "Hay un problema con nuestros servidores.\n" +
+                                "Estamos trabajando para corregirlo."
+                        , Toast.LENGTH_SHORT).show();
+                //+ error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                responseListener,ErrorListener) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("operacion", "delete");
+                params.put("idPersonal",String.valueOf(idPersonal));
+                params.put("idUnidad",String.valueOf(idUnidad));
+                return params;
+            }
+        };
+        VolleySingleton.getIntanciaVolley(context).addToRequestQueue(stringRequest);
     }
 }
