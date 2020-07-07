@@ -19,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.osmdroid.config.Configuration;
@@ -59,6 +60,7 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
     private Ubicacion ubicacion;
     private UbicacionControl control;
     private List<Ubicacion> ubicacionList;
+    private ImageView expand;
 
     public static DetallePasoFragment newInstance() {
         return new DetallePasoFragment();
@@ -100,6 +102,7 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         mapView = view.findViewById(R.id.map);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setUseDataConnection(true);
+        mapView.setOnClickListener(this);
 
         GeoPoint centro =
                 new GeoPoint(ubicacionList.get(0).getLatidud(), ubicacionList.get(0).getLongitud(),
@@ -148,7 +151,8 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         capa.setFocusItemsOnTap(true);
 
         mapView.getOverlays().add(capa);
-
+        expand = view.findViewById(R.id.imageView22);
+        expand.setOnClickListener(this);
 
         builder.setView(view);
         return builder.create();
@@ -166,7 +170,7 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(fragmentManager, "dialog");
                 break;
-            case R.id.cardView4:
+            case R.id.imageView22:
                 UbicacionFragment fragment = new UbicacionFragment();
                 fragment.setArguments(bundle);
                 getActivity()

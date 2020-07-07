@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import sv.ues.fia.eisi.trues.db.control.UsuarioControl;
+import sv.ues.fia.eisi.trues.db.control.UsuarioPasoControl;
+import sv.ues.fia.eisi.trues.db.control.UsuarioTramiteControl;
 import sv.ues.fia.eisi.trues.db.entity.Usuario;
+import sv.ues.fia.eisi.trues.db.entity.UsuarioTramite;
 
 public class LlenarBD {
     public void llenarBD(Context context){
@@ -107,11 +110,11 @@ public class LlenarBD {
         db.execSQL("INSERT INTO documento(idDocumento,url,nombreDocumento) VALUES (59,'http://tutofia.com/documentos/constancia_academica%202019.pdf','Constancia Academica');");
         db.execSQL("INSERT INTO documento(idDocumento,url,nombreDocumento) VALUES (60,'http://tutofia.com/documentos/certificaciones_2019.pdf','Certificaciones');");
 
-        db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (1,'Agronomía');");
+        db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (1,'Ingeniería y Arquitectura');");
         db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (2,'Ciencias Económicas');");
         db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (3,'Ciencias Naturales y Matemática');");
         db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (4,'Ciencias y Humanidades');");
-        db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (5,'Ingeniería y Arquitectura');");
+        db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (5,'Agronomía');");
         db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (6,'Jurisprudencia y Ciencias Sociales');");
         db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (7,'Medicina');");
         db.execSQL("INSERT INTO facultad(idFacultad,nombreFacultad) VALUES (8,'Odontología');");
@@ -2418,10 +2421,10 @@ public class LlenarBD {
         UsuarioControl usuarioControl = new UsuarioControl(context);
 
         usuarioControl.crearUsuario(new Usuario("admin", "123456","Administrador","", true, 1));
-        usuarioControl.crearUsuario(new Usuario("MH17015","123456","Lucy","Montoya", false,2));
-        usuarioControl.crearUsuario(new Usuario("GC17026","123456","Rony","García", true,9));
-        usuarioControl.crearUsuario(new Usuario("PM15020","123456","Noé","Ponce", true,6));
-        usuarioControl.crearUsuario(new Usuario("VM17015","123456","Rafael","Viscarra", false,2));
+        usuarioControl.crearUsuario(new Usuario("MH17015","123456","Lucy","Montoya", true,1));
+        usuarioControl.crearUsuario(new Usuario("GC17026","123456","Rony","García", true,1));
+        usuarioControl.crearUsuario(new Usuario("PM15020","123456","Noé","Ponce", true,1));
+        usuarioControl.crearUsuario(new Usuario("VM17015","123456","Rafael","Viscarra", true,1));
         usuarioControl.crearUsuario(new Usuario("decimo","123456","LIZBETH","LEMUS CARDOSO", false,5));
         usuarioControl.crearUsuario(new Usuario("invitado","123456","ADRIAN","NARANJO MARTINEZ", true,3));
         usuarioControl.crearUsuario(new Usuario("isaac","123456","ISACC MOISES","ROCHA AGUILAR", true,7));
@@ -2430,13 +2433,39 @@ public class LlenarBD {
         usuarioControl.crearUsuario(new Usuario("octavo","123456","MARTA GUADALUPE","VALLE CRUZ", false,4));
         usuarioControl.crearUsuario(new Usuario("primero","123456","FRANCISCO CESAR","BERNABE CASANOVA", true,1));
         usuarioControl.crearUsuario(new Usuario("quinto","123456","LUIS GUSTAVO","LÓPEZ RAMOS", false,3));
-        usuarioControl.crearUsuario(new Usuario("CO17008","123456","Luis","Chávez", true,5));
+        usuarioControl.crearUsuario(new Usuario("CO17008","123456","Luis","Chávez", true,1));
         usuarioControl.crearUsuario(new Usuario("segundo","123456","MARIA BELEN","CAMPOS VIQUE", false,1));
         usuarioControl.crearUsuario(new Usuario("septimo","123456","ROMEL ANTONIO","CRUZ SERMEÑO", false,1));
         usuarioControl.crearUsuario(new Usuario("sexto","123456","DAVID ISMAEL","HERNÁNDEZ AYALA", false,3));
         usuarioControl.crearUsuario(new Usuario("tercero","123456","ELENA MARIA","CASTILLO GALDEANO", true, 2));
         usuarioControl.crearUsuario(new Usuario("usuario","123456","SAMUEL ALEXANDER","NUÑO CANO", true,4));
 
+        UsuarioTramiteControl usuarioTramiteControl = new UsuarioTramiteControl(context);
 
+        usuarioTramiteControl.crearUTramite("GC17026", 1);
+        usuarioTramiteControl.crearUTramite("CO17008", 6);
+        usuarioTramiteControl.crearUTramite("CO17008", 3);
+        usuarioTramiteControl.crearUTramite("CO17008", 7);
+        usuarioTramiteControl.crearUTramite("MH17015", 8);
+        usuarioTramiteControl.crearUTramite("MH17015", 1);
+        usuarioTramiteControl.crearUTramite("MH17015", 2);
+        usuarioTramiteControl.crearUTramite("MH17015", 3);
+        usuarioTramiteControl.crearUTramite("MH17015", 6);
+        usuarioTramiteControl.crearUTramite("MH17015", 7);
+        usuarioTramiteControl.crearUTramite("GC17026", 2);
+        usuarioTramiteControl.crearUTramite("GC17026", 6);
+        usuarioTramiteControl.crearUTramite("GC17026", 7);
+        usuarioTramiteControl.crearUTramite("GC17026", 3);
+        usuarioTramiteControl.crearUTramite("MH17015", 4);
+        usuarioTramiteControl.crearUTramite("PM15020", 3);
+        usuarioTramiteControl.crearUTramite("GC17026", 4);
+        usuarioTramiteControl.crearUTramite("PM15020", 6);
+        usuarioTramiteControl.crearUTramite("PM15020", 2);
+        usuarioTramiteControl.crearUTramite("PM15020", 7);
+        usuarioTramiteControl.crearUTramite("PM15020", 4);
+        usuarioTramiteControl.crearUTramite("GC17026", 8);
+        usuarioTramiteControl.crearUTramite("VM17015", 2);
+        usuarioTramiteControl.crearUTramite("VM17015", 3);
+        usuarioTramiteControl.crearUTramite("MH17015", 7);
     }
 }

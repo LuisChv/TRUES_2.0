@@ -429,7 +429,7 @@ public class TramiteControl {
                         "COUNT(t.idTramite) AS Cantidad " +
                         "FROM usuarioTramite uT JOIN tramite t " +
                         "WHERE uT.idTramite = t.idTramite AND t.idFacultad = ?" +
-                        "GROUP BY t.idTramite ORDER BY Cantidad", args);
+                        "GROUP BY t.idTramite", args);
 
         while (cursor.moveToNext()){
             cantidades.add(cursor.getInt(1));
@@ -447,7 +447,7 @@ public class TramiteControl {
                         "COUNT(t.idTramite) AS Cantidad " +
                         "FROM usuarioTramite uT JOIN tramite t " +
                         "WHERE uT.idTramite = t.idTramite AND t.idFacultad = ?" +
-                        "GROUP BY t.idTramite ORDER BY Cantidad", args);
+                        "GROUP BY t.idTramite", args);
 
         while (cursor.moveToNext()){
             nombre.add(cursor.getString(0));

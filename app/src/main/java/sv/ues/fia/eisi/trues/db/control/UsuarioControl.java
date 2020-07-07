@@ -235,7 +235,7 @@ public class UsuarioControl {
                         "COUNT(u.usuario) AS Cantidad " +
                         "FROM usuarioTramite uT JOIN usuario u " +
                         "WHERE uT.usuario = u.usuario AND u.idFacultad = ?" +
-                        "GROUP BY u.usuario ORDER BY Cantidad", args);
+                        "GROUP BY u.usuario", args);
 
         while (cursor.moveToNext()){
             cantidades.add(cursor.getInt(1));
@@ -253,7 +253,7 @@ public class UsuarioControl {
                         "COUNT(u.usuario) AS Cantidad " +
                         "FROM usuarioTramite uT JOIN usuario u " +
                         "WHERE uT.usuario = u.usuario AND u.idFacultad = ?" +
-                        "GROUP BY u.usuario ORDER BY Cantidad", args);
+                        "GROUP BY u.usuario", args);
 
         while (cursor.moveToNext()){
             nombre.add(cursor.getString(0));
