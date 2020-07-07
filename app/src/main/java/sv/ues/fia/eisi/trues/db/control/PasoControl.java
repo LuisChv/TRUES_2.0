@@ -276,7 +276,7 @@ public class PasoControl {
         }
 
         cursor.close();
-        Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
     public void actualizarPasoWS(final Integer id, final Integer idPersonal, final String descripcionPaso, final float porcentaje){

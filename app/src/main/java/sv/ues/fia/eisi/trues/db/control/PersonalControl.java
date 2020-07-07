@@ -200,7 +200,7 @@ public class PersonalControl {
         } else {
             mensaje = context.getText(R.string.error).toString();
         }
-        Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
     public void actualizarPersonalWS(final int idPersonal, final String nombrePersonal){

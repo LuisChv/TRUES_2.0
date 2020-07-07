@@ -260,7 +260,7 @@ public class DocumentoControl {
             mensaje = context.getText(R.string.error_actualizar).toString();
         }
         cursor.close();
-        Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
     public String EliminarDocumento(int idDocumento){

@@ -442,7 +442,7 @@ public class SyncReadFiles {
 
                         try{
                             int id = actividadControl.CrearActividadDwld(idActividad,idFacultad, nombreActividad, inicio, finall);
-                            Toast.makeText(context,"Registro descargado"+response.toString(),Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context,"Registro descargado"+response.toString(),Toast.LENGTH_SHORT).show();
 
                         }catch(Exception e){
                             //Toast.makeText(context,"Registro no descargado"+response.toString(),Toast.LENGTH_SHORT).show();

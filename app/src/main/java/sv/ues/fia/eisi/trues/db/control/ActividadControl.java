@@ -324,7 +324,7 @@ public class ActividadControl {
         db.close();
         cursor.close();
 
-        Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context.getApplicationContext(), mensaje, Toast.LENGTH_SHORT).show();
     }
 
     public void ActualizarActividadWS(final Integer idActividad, final String nombreActividad, final String fechaInicio, final String fechaFinal){
