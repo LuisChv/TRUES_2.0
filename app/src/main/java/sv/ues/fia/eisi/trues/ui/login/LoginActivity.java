@@ -382,7 +382,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnFocusChan
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.imageViewBarcode:
-                new IntentIntegrator(LoginActivity.this).initiateScan();
+                new IntentIntegrator(LoginActivity.this)
+                        .setPrompt(getText(R.string.scan).toString())
+                        .initiateScan();
                 break;
             case R.id.login:
                 Boolean exito = loginViewModel.login(usernameEditText.getText().toString(),

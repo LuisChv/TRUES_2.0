@@ -34,6 +34,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -51,12 +53,14 @@ import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.SyncReadFiles;
 import sv.ues.fia.eisi.trues.db.control.AccesoUsuarioControl;
 import sv.ues.fia.eisi.trues.db.control.FacultadControl;
+import sv.ues.fia.eisi.trues.db.control.TramiteControl;
 import sv.ues.fia.eisi.trues.db.entity.Actividad;
 import sv.ues.fia.eisi.trues.db.entity.Documento;
 import sv.ues.fia.eisi.trues.db.entity.Paso;
 import sv.ues.fia.eisi.trues.db.entity.PasoEstado;
 import sv.ues.fia.eisi.trues.db.entity.Requisito;
 import sv.ues.fia.eisi.trues.db.entity.Tramite;
+import sv.ues.fia.eisi.trues.db.entity.Usuario;
 import sv.ues.fia.eisi.trues.db.entity.UsuarioTramite;
 import sv.ues.fia.eisi.trues.ui.admin.AdministracionFragment;
 import sv.ues.fia.eisi.trues.ui.admin.calendario.agregar.AgregarActividadFragment;
@@ -71,6 +75,7 @@ import sv.ues.fia.eisi.trues.ui.global.documento.lista.DocumentoFragment;
 import sv.ues.fia.eisi.trues.ui.global.paso.lista.PasoFragment;
 import sv.ues.fia.eisi.trues.ui.global.requisito.RequisitosFragment;
 import sv.ues.fia.eisi.trues.ui.global.tramite.lista.TramitesFragment;
+import sv.ues.fia.eisi.trues.ui.global.tramite.menu.MenuTramiteFragment;
 import sv.ues.fia.eisi.trues.ui.login.LoginActivity;
 
 public class MenuAdminActivity extends AppCompatActivity implements
@@ -197,6 +202,7 @@ public class MenuAdminActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK && null != data) {
@@ -222,6 +228,27 @@ public class MenuAdminActivity extends AppCompatActivity implements
                 }
                 break;
             default:
+                if (result != null) {
+
+                    if (result.getContents() != null) {
+                        String qr = result.getContents();
+                        TramiteControl tramiteControl = new TramiteControl(this);
+                        if (tramiteControl.existe(qr)) {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("idTramite", Integer.parseInt(qr));
+                            MenuTramiteFragment menuTramiteFragment = new MenuTramiteFragment();
+                            menuTramiteFragment.setArguments(bundle);
+
+                            this.getSupportFragmentManager().
+                                    beginTransaction().add(R.id.mainContainer, menuTramiteFragment).addToBackStack(null).commit();
+                        } else {
+                            Toast.makeText(this, getText(R.string.error_tramite), Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        Toast.makeText(this, getText(R.string.error_qr), Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
         }
     }
@@ -387,6 +414,11 @@ public class MenuAdminActivity extends AppCompatActivity implements
             case R.id.sincronizar:
                 syncReadFiles = new SyncReadFiles();
                 syncReadFiles.SubirCambios(getApplicationContext());
+                break;
+            case R.id.qr:
+                new IntentIntegrator(MenuAdminActivity.this)
+                        .setPrompt(getText(R.string.scanqr).toString())
+                        .initiateScan();
                 break;
         }
         return super.onOptionsItemSelected(item);

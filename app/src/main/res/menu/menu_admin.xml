@@ -10,4 +10,7 @@
         android:id="@+id/sincronizar"
         android:title="@string/sincronizar"
         android:visible="true" />
+    <item
+        android:id="@+id/qr"
+        android:title="@string/qr" />
 </menu>

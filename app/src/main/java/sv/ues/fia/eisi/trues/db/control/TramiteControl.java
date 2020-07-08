@@ -455,4 +455,20 @@ public class TramiteControl {
 
         return nombre;
     }
+
+    public Boolean existe(String id){
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String[] args = {id};
+        Cursor cursor = db.query("tramite",null,"idTramite = ?",args,null,null,null);
+        if(cursor.moveToFirst()){
+            cursor.close();
+            db.close();
+            return true;
+        }
+        else {
+            cursor.close();
+            db.close();
+            return false;
+        }
+    }
 }

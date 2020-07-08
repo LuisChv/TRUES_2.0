@@ -194,6 +194,11 @@
     <string name="sincronizar">Sincronizar</string>
     <string name="gps">Por favor active el gps.</string>
     <string name="tuubicacion">Actualmente te encuentras en este lugar.</string>
+    <string name="qr">Buscar trámite</string>
+    <string name="error_tramite">Este trámite no existe en la base de datos.</string>
+    <string name="error_qr">Error al escanear, por favor enfoque bien el código.</string>
+    <string name="scan">Enfoque la parte posterios de su carnet.\n</string>
+    <string name="scanqr">Enfoque el codigo QR del trámite.\n</string>
 
 
 </resources>
