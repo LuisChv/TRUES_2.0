@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,7 +13,14 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
@@ -21,6 +29,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -30,6 +40,8 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +72,11 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
     private Ubicacion ubicacion;
     private UbicacionControl control;
     private List<Ubicacion> ubicacionList;
-    private ImageView expand;
+    private ImageView expand, pin;
+    private MyLocationNewOverlay myLocation;
+    private GpsMyLocationProvider provider;
+    private Boolean mi = false;
+    private GeoPoint centro;
 
     public static DetallePasoFragment newInstance() {
         return new DetallePasoFragment();
@@ -93,8 +109,6 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         cardViewResponsable = view.findViewById(R.id.cardView3);
         cardViewResponsable.setOnClickListener(this);
         cardViewUbicacion = view.findViewById(R.id.cardView4);
-        //cardViewUbicacion.setOnClickListener(this);
-
 
         control = new UbicacionControl(context);
         ubicacionList = control.ObtenerUbicaciones(idPersonal);
@@ -104,7 +118,21 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         mapView.setUseDataConnection(true);
         mapView.setOnClickListener(this);
 
-        GeoPoint centro =
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        if(permissionCheck == PackageManager.PERMISSION_DENIED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) { }
+            else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+
+        provider = new GpsMyLocationProvider(getActivity().getApplicationContext());
+        myLocation = new MyLocationNewOverlay(provider, mapView);
+        myLocation.setOptionsMenuEnabled(true);
+        mapView.getOverlays().add(myLocation);
+        myLocation.enableMyLocation();
+
+        centro =
                 new GeoPoint(ubicacionList.get(0).getLatidud(), ubicacionList.get(0).getLongitud(),
                         ubicacionList.get(0).getAltitud());
 
@@ -153,6 +181,8 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
         mapView.getOverlays().add(capa);
         expand = view.findViewById(R.id.imageView22);
         expand.setOnClickListener(this);
+        pin = view.findViewById(R.id.imageView23);
+        pin.setOnClickListener(this);
 
         builder.setView(view);
         return builder.create();
@@ -180,6 +210,16 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
                         .addToBackStack(null).commit();
                 dismiss();
                 break;
+            case R.id.imageView23:
+                if (mi){
+                    myLocation.disableFollowLocation();
+                    mapController.setCenter(centro);
+                }
+                else {
+                    myLocation.enableFollowLocation();
+                }
+                mi = !mi;
+                break;
         }
 
 
@@ -201,4 +241,5 @@ public class DetallePasoFragment extends DialogFragment implements View.OnClickL
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
+
 }

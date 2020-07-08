@@ -3,12 +3,17 @@ package sv.ues.fia.eisi.trues.ui.global.ubicacion;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -40,7 +46,7 @@ import sv.ues.fia.eisi.trues.R;
 import sv.ues.fia.eisi.trues.db.control.UbicacionControl;
 import sv.ues.fia.eisi.trues.db.entity.Ubicacion;
 
-public class UbicacionFragment extends Fragment {
+public class UbicacionFragment extends Fragment implements View.OnClickListener {
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
     private MapView mapView;
     private MapController mapController;
@@ -49,6 +55,12 @@ public class UbicacionFragment extends Fragment {
     private Ubicacion ubicacion;
     private UbicacionControl control;
     private List<Ubicacion> ubicacionList;
+    private ImageView pin;
+    private MyLocationNewOverlay myLocation;
+    private GpsMyLocationProvider provider;
+    private Boolean mi = false;
+    private GeoPoint centro;
+
 
     public static UbicacionFragment newInstance() {
         return new UbicacionFragment();
@@ -74,7 +86,21 @@ public class UbicacionFragment extends Fragment {
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setUseDataConnection(true);
 
-        GeoPoint centro =
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        if(permissionCheck == PackageManager.PERMISSION_DENIED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) { }
+            else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+
+        provider = new GpsMyLocationProvider(getActivity().getApplicationContext());
+        myLocation = new MyLocationNewOverlay(provider, mapView);
+        myLocation.setOptionsMenuEnabled(true);
+        mapView.getOverlays().add(myLocation);
+        myLocation.enableMyLocation();
+
+        centro =
                 new GeoPoint(ubicacionList.get(0).getLatidud(), ubicacionList.get(0).getLongitud(),
                         ubicacionList.get(0).getAltitud());
 
@@ -121,6 +147,10 @@ public class UbicacionFragment extends Fragment {
         capa.setFocusItemsOnTap(true);
         mapView.getOverlays().add(capa);
 
+        mapView.getOverlays().add(capa);
+        pin = view.findViewById(R.id.imageView24);
+        pin.setOnClickListener(this);
+
         return view;
     }
 
@@ -146,4 +176,18 @@ public class UbicacionFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.imageView24:
+                if (mi){
+                    mapController.setCenter(centro);
+                }
+                else {
+                    myLocation.enableFollowLocation();
+                }
+                mi = !mi;
+                break;
+        }
+    }
 }

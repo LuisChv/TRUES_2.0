@@ -192,6 +192,8 @@
     <string name="notification_channel_group_general">General</string>
     <string name="IP">https://eisi.fia.ues.edu.sv/eisi06</string>
     <string name="sincronizar">Sincronizar</string>
+    <string name="gps">Por favor active el gps.</string>
+    <string name="tuubicacion">Actualmente te encuentras en este lugar.</string>
 
 
 </resources>
